@@ -9,6 +9,7 @@ const dbName = process.env.DB_NAME as string;
 const connectionString: string = `mongodb+srv://${dbUser}:${dbPassword}@${dbHost}/${dbName}?retryWrites=true&w=majority`;
 
 const options: mongoose.ConnectOptions = {
+  
 };
 
 const connection = ()=>{

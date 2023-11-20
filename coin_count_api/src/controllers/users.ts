@@ -7,8 +7,6 @@ export const createUser = async (req: Request, res: Response) => {
         const user = new User(req.body);
         await user.save();
         res.status(200).json(user.toJSON());
-        await user.save();
-        res.status(200).json(user);
     } catch (err: any) {
         res.status(400).json({ message: err.message });
     }

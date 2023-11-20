@@ -15,11 +15,10 @@ app.use(morgan('dev'));
 
 const port = process.env.PORT || 3000;
 
-
-
 fs.readdirSync("./src/routes").map((file) => {
   app.use("/api", require(`./routes/${file}`));
 });
+
 
 app.listen(port,async () => {
   const networkIp = osf.getNetworkIp();
