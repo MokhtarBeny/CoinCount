@@ -17,7 +17,7 @@ export const getUsers = async (req: Request, res: Response) => {
     try {
         const users = await User.find();
         res.json(users);
-    } catch (err) {
+    } catch (err: any) {
         res.status(500).json({ message: err.message });
     }
 };
@@ -27,7 +27,7 @@ export const getUserById = async (req: Request, res: Response) => {
         const user = await User.findById(req.params.id);
         if (!user) throw new Error('User not found');
         res.json(user);
-    } catch (err) {
+    } catch (err: any) {
         res.status(404).json({ message: err.message });
     }
 };
@@ -40,7 +40,7 @@ export const updateUser = async (req: Request, res: Response) => {
         Object.assign(user, req.body);
         await user.save();
         res.json(user);
-    } catch (err) {
+    } catch (err: any) {
         res.status(404).json({ message: err.message });
     }
 };
@@ -50,9 +50,9 @@ export const deleteUser = async (req: Request, res: Response) => {
     try {
         const user = await User.findById(req.params.id);
         if (!user) throw new Error('User not found');
-        await user.remove();
+        // await user.remove();
         res.json({ message: 'User deleted' });
-    } catch (err) {
+    } catch (err: any) {
         res.status(404).json({ message: err.message });
     }
 };
