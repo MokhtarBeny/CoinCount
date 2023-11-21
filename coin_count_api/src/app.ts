@@ -8,7 +8,9 @@ app.use(cors());
 app.use(morgan('dev'));
 
 fs.readdirSync("./src/routes").forEach((file) => {
-    import(`./routes/${file}`).then((route) => {
+    const isItDev = process.env.NODE_ENV === "development";
+    const route = isItDev ? `./src/routes/${file}` : `./routes/${file.split(".")[0]}`
+    import(route).then((route) => {
         app.use("/api", route.default);
     });
 });

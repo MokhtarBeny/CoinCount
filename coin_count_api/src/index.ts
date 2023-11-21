@@ -1,7 +1,7 @@
 import app from './app';
-import logger from '@/utils/logger';
-import osf from '@/utils/osf';
-import database from '@/utils/database';
+import logger from './utils/logger';
+import osf from './utils/osf';
+import database from './utils/database';
 import dotenv from 'dotenv';
 
 dotenv.config();
