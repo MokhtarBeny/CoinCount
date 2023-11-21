@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "resolveJsonModule": true,
     "target": "es2018",
     "module": "commonjs",
     "lib": [
@@ -11,19 +12,19 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": "./", // This must be set if you use "paths"
+    "baseUrl": "./",
     "paths": {
       "@/*": [
         "./src/*"
       ],
       "@models/*": [
-        "src/models/*"
+        "./src/models/*"
       ],
       "@routes/*": [
-        "src/routes/*"
+        "./src/routes/*"
       ],
       "@controllers/*": [
-        "src/controllers/*"
+        "./src/controllers/*"
       ],
       "@utils/*": [
         "./src/utils/*"
@@ -35,5 +36,8 @@
   ],
   "exclude": [
     "node_modules"
+  ],
+  "types": [
+    "@types/jest"
   ]
 }

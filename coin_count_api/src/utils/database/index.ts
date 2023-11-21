@@ -6,14 +6,17 @@ const dbUser = process.env.DB_USER as string;
 const dbPassword = process.env.DB_PASSWORD as string;
 const dbHost = process.env.DB_HOST as string;
 const dbName = process.env.DB_NAME as string;
-const connectionString: string = `mongodb+srv://${dbUser}:${dbPassword}@${dbHost}/${dbName}?retryWrites=true&w=majority`;
+
+const genConnectionString = (db: string = dbName): string => {
+  return `mongodb+srv://${dbUser}:${dbPassword}@${dbHost}/${db}?retryWrites=true&w=majority`;
+}
 
 const options: mongoose.ConnectOptions = {
-  
+
 };
 
-const connection = ()=>{
-  mongoose.connect(connectionString, options)
+const connection = (db: string = dbName) => {
+  mongoose.connect(genConnectionString(db), options)
     .then(() => logger.info('Connected to MongoDB'))
     .catch((err: Error) => logger.error(err.message));
 }
