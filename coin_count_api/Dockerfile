@@ -5,7 +5,7 @@ FROM node as builder
 WORKDIR /app
 
 # Copy the package.json and package-lock.json files
-COPY package.json package-lock.json ./
+COPY package.json ./
 
 # Install dependencies in the container
 RUN npm ci --only=production
