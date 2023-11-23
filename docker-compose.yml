@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+    api:
+        container_name: coin_count_api
+        build:
+            context: ./coin_count_api
+            dockerfile: Dockerfile
+        ports:
+            - "5036:5036"
+        environment:
+            - NODE_ENV=production
+        volumes:
+            - ./coin_count_api:/app
+        command: npm run start
+    frontend:
+        container_name: coint_count_frontend
+        build:
+            context: ./coint_count
+            dockerfile: Dockerfile
+        ports:
+            - "3000:3000"
+        environment:
+            - NODE_ENV=production
+        volumes:
+            - ./coint_count:/app
+        command: npm start
