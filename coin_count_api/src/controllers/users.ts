@@ -21,13 +21,13 @@ const verifyJwt = (token: string): { userId: string } | null => {
 // Registration function
 export const register = async (req: Request, res: Response): Promise<Response> => {
     try {
-        // if (!req.body.username || !req.body.email || !req.body.password) res.status(400).json({ message: 'Username, email, and password are required' });
+        if (!req.body.username || !req.body.email || !req.body.password) res.status(400).json({ message: 'Username, email, and password are required' });
         const { username, email, password } = req.body;
 
         const userExists = await User.findOne({ email });
-        // if (userExists) {
-        //     return res.status(400).json({ message: 'User already exists' });
-        // }
+        if (userExists) {
+            return res.status(400).json({ message: 'User already exists' });
+        }
         const user = new User({ username, email, password });
         await user.save();
         user.password = undefined;

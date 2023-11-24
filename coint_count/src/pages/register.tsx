@@ -79,7 +79,7 @@ const RegisterPage: React.FC = () => {
     <div className="flex h-screen">
       {/* Your page layout */}
       <div className="w-full md:w-1/2 flex items-center justify-center bg-white">
-        <form className="w-96 p-8">
+        <form className="w-96 p-8 py-4">
           <h2 className="text-2xl font-bold mb-4">Register</h2>
 
           <div className="mb-4">
