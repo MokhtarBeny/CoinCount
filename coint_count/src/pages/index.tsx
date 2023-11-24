@@ -2,12 +2,18 @@ import Image from "next/image";
 import { useSelector, useDispatch } from "react-redux";
 import { increment, selectCounter } from "@/store/slices/counterSlice";
 import { Inter } from "next/font/google";
+import { logout } from "@/store/slices/authSlice";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const dispatch = useDispatch();
   const count = useSelector(selectCounter);
+  const auth = useSelector((state: any) => state.auth);
+  const signOut = () => {
+    dispatch(logout());
+    window.localStorage.clear();
+  };
   return (
     <main
       className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
@@ -120,12 +126,21 @@ export default function Home() {
 
       <div className="text-center">
         <h2>Test Store with Counter: {count}</h2>
+        <p>Username : {auth.user.email}</p>
         <button
           onClick={() => dispatch(increment())}
           className="rounded bg-blue-500 py-2 px-4 text-white hover:bg-blue-700"
         >
           Increment
         </button>
+        {auth.token ? (
+          <button
+            onClick={signOut}
+            className="rounded bg-red-500 mx-2 py-2 px-4 text-white hover:bg-blue-700"
+          >
+            Logout
+          </button>
+        ) : null}
       </div>
     </main>
   );
