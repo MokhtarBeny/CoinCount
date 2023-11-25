@@ -4,8 +4,12 @@ import morgan from 'morgan';
 import fs from 'fs';
 
 const app = express();
-app.use(cors());
 app.use(morgan('dev'));
+
+app.use(express.json()); // For parsing application/json
+app.use(express.urlencoded({ extended: true })); // For parsing application/x-www-form-urlencoded
+app.use(cors());
+
 
 fs.readdirSync("./src/routes").forEach((file) => {
     const isItDev = process.env.NODE_ENV === "development";

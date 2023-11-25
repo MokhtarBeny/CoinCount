@@ -4,8 +4,14 @@ const router = express.Router();
 const ENDPOINT: string = "users";
 const controller = require(`../controllers/${ENDPOINT}`);
 
-router.get(`/${ENDPOINT}/`, (req, res) => {
 
-    res.send('Hello World!');
+router.get("/refresh_token", controller.refreshToken)
+router.post(`/register`, controller.register)
+router.post(`/login`, controller.login)
+router.get(`/${ENDPOINT}/`, (req, res) => {
+    res.json({
+        "hello": "world"
+    })
+
 });
 module.exports = router;
