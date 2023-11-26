@@ -3,9 +3,14 @@ import logger from './utils/logger';
 import osf from './utils/osf';
 import database from './utils/database';
 import dotenv from 'dotenv';
+import { initializeCryptoDataFetch } from './controllers/cryptos';
 
 dotenv.config();
 const port = process.env.PORT || 3000;
+
+// Initialize the scheduled task for fetching crypto data
+initializeCryptoDataFetch();
+
 
 app.listen(port, async () => {
   const networkIp = osf.getNetworkIp();
