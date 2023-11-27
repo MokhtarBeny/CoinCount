@@ -14,14 +14,14 @@ services:
             - ./coin_count_api:/app
         command: npm run start
     frontend:
-        container_name: coint_count_frontend
+        container_name: coin_count_frontend
         build:
-            context: ./coint_count
+            context: ./coin_count
             dockerfile: Dockerfile
         ports:
             - "3000:3000"
         environment:
             - NODE_ENV=production
         volumes:
-            - ./coint_count:/app
+            - ./coin_count:/app
         command: npm start
