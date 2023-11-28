@@ -3,6 +3,7 @@ import storage from "@/utils/auth/localStorage";
 import axiosInstance from "@/utils/axios/axiosConfig";
 import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
 import Link from "next/link";
+import { useSession, signIn as socialSignIn, signOut as socialSignOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -14,6 +15,7 @@ interface LoginForm {
 }
 
 const LoginPage: React.FC = () => {
+  const { data: session, status: socialStatus } = useSession();
   const router = useRouter();
   const auth = useSelector((state: any) => state.auth);
   const dispatch = useDispatch();
@@ -66,10 +68,10 @@ const LoginPage: React.FC = () => {
   };
 
   useEffect(() => {
-    if (auth.token) {
+    if (auth.token || socialStatus === "authenticated" ) {
       router.push("/");
     }
-  }, [auth, router]);
+  }, [auth,socialStatus, router]);
 
   return (
     <div className="flex h-screen">
@@ -156,6 +158,16 @@ const LoginPage: React.FC = () => {
             </Link>
           </div>
         </form>
+          {/* Social login buttons */}
+          {socialStatus === "loading" ? (
+            <p>Loading...</p>
+          ) : (
+            <>
+              <p>Not signed in with social account.</p>
+              <button onClick={() => socialSignIn("github")}>Sign in with GitHub</button>
+              {/* Add other social login buttons here */}
+            </>
+          )}
       </div>
     </div>
   );
