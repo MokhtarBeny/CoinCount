@@ -3,13 +3,15 @@ import logger from './utils/logger';
 import osf from './utils/osf';
 import database from './utils/database';
 import dotenv from 'dotenv';
-import { initializeCryptoDataFetch } from './controllers/cryptos';
+import { cryptoDataFetch } from './services/crypto/initializeCryptoDataFetch';
+
+
+
 
 dotenv.config();
 const port = process.env.PORT || 3000;
 
-// Initialize the scheduled task for fetching crypto data
-initializeCryptoDataFetch();
+cryptoDataFetch();
 
 
 app.listen(port, async () => {
