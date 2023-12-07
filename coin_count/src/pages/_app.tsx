@@ -34,12 +34,12 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
       refreshMyToken();
     }
   }, []);
-
   return (
     <SessionProvider session={session}>
       <Component {...pageProps} />
     </SessionProvider>
   );
+
 }
 
 export default wrapper.withRedux(MyApp);

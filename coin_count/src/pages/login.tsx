@@ -83,7 +83,6 @@ const LoginPage: React.FC = () => {
   return (
     <div className="flex h-screen">
       <div className="hidden md:block md:w-1/2 bg-gradient-to-r from-sky-500 to-indigo-500"></div>
-
       <div className="w-full md:w-1/2 flex flex-col items-center justify-center bg-white">
         <form className="w-96 p-8">
           <h2 className="text-2xl font-bold mb-4">Login</h2>

@@ -71,7 +71,6 @@ const RegisterPage: React.FC = () => {
       setError(err.response.data.message);
     }
   };
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm((prevForm) => ({
