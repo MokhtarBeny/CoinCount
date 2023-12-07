@@ -3,16 +3,21 @@ import { useSelector, useDispatch } from "react-redux";
 import { increment, selectCounter } from "@/store/slices/counterSlice";
 import { Inter } from "next/font/google";
 import { logout } from "@/store/slices/authSlice";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  const router = useRouter();
   const dispatch = useDispatch();
   const count = useSelector(selectCounter);
   const auth = useSelector((state: any) => state.auth);
   const signOut = () => {
     dispatch(logout());
     window.localStorage.clear();
+    router.replace("/");
   };
   return (
     <main
