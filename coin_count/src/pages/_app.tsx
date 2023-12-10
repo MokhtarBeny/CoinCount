@@ -7,6 +7,7 @@ import storage from "@/utils/auth/localStorage";
 import axiosInstance from "@/utils/axios/axiosConfig";
 import { login } from "@/store/slices/authSlice";
 import { SessionProvider, useSession } from "next-auth/react";
+import {NextUIProvider} from "@nextui-org/react";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const dispatch = useDispatch();
@@ -35,9 +36,12 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     }
   }, []);
   return (
-    <SessionProvider session={session}>
+    <NextUIProvider> 
+     <SessionProvider session={session}>
       <Component {...pageProps} />
     </SessionProvider>
+    </NextUIProvider>
+
   );
 
 }
