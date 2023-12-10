@@ -2,10 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
+import {
+  EyeInvisibleOutlined,
+  EyeOutlined,
+  GithubFilled,
+  GoogleCircleFilled,
+} from "@ant-design/icons";
 import axiosInstance from "@/utils/axios/axiosConfig";
 import storage from "@/utils/auth/localStorage";
 import { login } from "@/store/slices/authSlice";
+import { signIn } from "next-auth/react";
 
 interface RegisterForm {
   username: string;
@@ -56,7 +62,15 @@ const RegisterPage: React.FC = () => {
       setError(err.response.data.message);
     }
   };
+  const handleSocialLogin = async (provider: string) => {
+    try {
+      const res = await signIn(provider, { callbackUrl: "/" });
 
+      console.log("SOCIAL : ", res);
+    } catch (err: any) {
+      setError(err.response.data.message);
+    }
+  };
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm((prevForm) => ({
@@ -78,7 +92,7 @@ const RegisterPage: React.FC = () => {
   return (
     <div className="flex h-screen">
       {/* Your page layout */}
-      <div className="w-full md:w-1/2 flex items-center justify-center bg-white">
+      <div className="w-full md:w-1/2 flex flex-col items-center justify-center bg-white">
         <form className="w-96 p-8 py-4">
           <h2 className="text-2xl font-bold mb-4">Register</h2>
 
@@ -174,33 +188,37 @@ const RegisterPage: React.FC = () => {
           {error && (
             <p className="text-red-500 text-sm mt-2 text-center">{error}</p>
           )}
-          <div className="mt-4">
-            <p className="text-gray-600">Or sign up with:</p>
-            <div className="flex mt-2">
-              <button
-                className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 mr-2"
-                // onClick={() => handleSocialLogin("facebook")}
-              >
-                Facebook
-              </button>
-              <button
-                className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
-                // onClick={() => handleSocialLogin("google")}
-              >
-                Google
-              </button>
-            </div>
-          </div>
-          <div className="mt-4">
-            <p className="text-gray-600">Already have an account?</p>
-            <Link
-              href={"/login"}
-              className="text-blue-500 hover:underline focus:outline-none"
-            >
-              Login
-            </Link>
-          </div>
         </form>
+        <div className="flex-row items-center justify-center">
+          <p className="text-gray-600">Or sign up with:</p>
+          <div className="flex mt-2">
+            <button
+              className="bg-gray-200 text-gray-800 py-2 px-4 rounded hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-opacity-50 transition ease-in-out duration-150 mr-2"
+              onClick={() => handleSocialLogin("github")}
+            >
+              <span className="inline-flex items-center">
+                <GithubFilled />
+              </span>
+            </button>
+            <button
+              className="bg-gray-200 text-gray-800 py-2 px-4 rounded hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-opacity-50 transition ease-in-out duration-150 mr-2"
+              onClick={() => handleSocialLogin("google")}
+            >
+              <span className="inline-flex items-center">
+                <GoogleCircleFilled />
+              </span>
+            </button>
+          </div>
+        </div>
+        <div className="mt-4 flex">
+          <p className="text-gray-600 mr-2">Already have an account?</p>
+          <Link
+            href={"/login"}
+            className="text-blue-500 hover:underline focus:outline-none"
+          >
+            Login
+          </Link>
+        </div>
       </div>
       <div className="hidden md:block md:w-1/2 bg-gradient-to-r from-sky-500 to-indigo-500"></div>
     </div>

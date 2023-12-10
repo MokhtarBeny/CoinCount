@@ -6,13 +6,14 @@ import { useDispatch } from "react-redux";
 import storage from "@/utils/auth/localStorage";
 import axiosInstance from "@/utils/axios/axiosConfig";
 import { login } from "@/store/slices/authSlice";
+import { SessionProvider, useSession } from "next-auth/react";
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const dispatch = useDispatch();
 
+  console.log(session);
   useEffect(() => {
     const t = localStorage.getItem("t");
-
     if (t) {
       const refreshMyToken = async () => {
         try {
@@ -33,8 +34,12 @@ function MyApp({ Component, pageProps }: AppProps) {
       refreshMyToken();
     }
   }, []);
+  return (
+    <SessionProvider session={session}>
+      <Component {...pageProps} />
+    </SessionProvider>
+  );
 
-  return <Component {...pageProps} />;
 }
 
 export default wrapper.withRedux(MyApp);

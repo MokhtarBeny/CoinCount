@@ -84,3 +84,61 @@ export const refreshToken = async (req: Request, res: Response): Promise<Respons
         return res.status(500).json({ message: 'Server error' });
     }
 };
+
+
+
+export const getUsers = async (req: Request, res: Response): Promise<Response> => {
+    try {
+        const users = await User.find();
+        return res.json(users);
+    } catch (error) {
+        return res.status(500).json({ message: 'Server error' });
+    }
+}
+export const socialSignIn = async (req: Request, res: Response): Promise<Response> => {
+    try {
+        const { user, account } = req.body;
+        console.log("ACCOUNT : ",)
+        let dbUser = await User.findOne({
+            $or: [
+                { 'socialAccounts.providerAccountId': account.providerAccountId },
+                { email: user.email }
+            ]
+        });
+        if (!dbUser) {
+            dbUser = new User({
+                username: user.name,
+                email: user.email,
+                socialAccounts: [{
+                    provider: account.provider,
+                    providerAccountId: account.providerAccountId
+                }]
+            });
+            await dbUser.save();
+        } else {
+            const socialAccountExists = dbUser.socialAccounts.some(
+                acc => acc.providerAccountId === account.providerAccountId
+            );
+            if (!socialAccountExists) {
+                dbUser.socialAccounts.push({
+                    provider: account.provider,
+                    providerAccountId: account.providerAccountId
+                });
+                await dbUser.save();
+            }
+        }
+        const token = generateJwt(dbUser._id);
+        return res.status(200).json({
+            message: 'Social sign-in successful',
+            token,
+            user: {
+                id: dbUser._id,
+                username: dbUser.username,
+                email: dbUser.email,
+                socialAccounts: dbUser.socialAccounts
+            }
+        });
+    } catch (error) {
+        return res.status(500).json({ message: 'Server error', error });
+    }
+};
