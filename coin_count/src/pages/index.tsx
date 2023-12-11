@@ -3,16 +3,23 @@ import { useSelector, useDispatch } from "react-redux";
 import { increment, selectCounter } from "@/store/slices/counterSlice";
 import { Inter } from "next/font/google";
 import { logout } from "@/store/slices/authSlice";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+import {Button, ButtonGroup} from "@nextui-org/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  const router = useRouter();
+
   const dispatch = useDispatch();
   const count = useSelector(selectCounter);
   const auth = useSelector((state: any) => state.auth);
   const signOut = () => {
     dispatch(logout());
     window.localStorage.clear();
+    router.replace("/");
   };
   return (
     <main
@@ -127,19 +134,20 @@ export default function Home() {
       <div className="text-center">
         <h2>Test Store with Counter: {count}</h2>
         <p>Username : {auth.user.email}</p>
-        <button
+     
+        <Button
           onClick={() => dispatch(increment())}
-          className="rounded bg-blue-500 py-2 px-4 text-white hover:bg-blue-700"
+          radius="full" className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg"
         >
           Increment
-        </button>
+        </Button>
         {auth.token ? (
-          <button
+          <Button
             onClick={signOut}
-            className="rounded bg-red-500 mx-2 py-2 px-4 text-white hover:bg-blue-700"
+            radius="full"  className=" bg-red-500 mx-2 py-2 px-4 text-white hover:bg-blue-700"
           >
             Logout
-          </button>
+          </Button>
         ) : null}
       </div>
     </main>
