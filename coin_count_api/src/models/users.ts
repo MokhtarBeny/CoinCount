@@ -11,7 +11,7 @@ const watchlistSchema = new mongoose.Schema({
   cryptos: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Crypto'
+      ref: 'Cryptocurrency'
     }
   ]
 });
