@@ -1,5 +1,5 @@
 
-import { ICryptoData } from '@/utils/interface/crytposInterface';
+import { ICryptoData, ICryptoHistoryData } from '@/utils/interface/crytposInterface';
 
 import mongoose from 'mongoose';
 const cryptocurrencySchema = new mongoose.Schema<ICryptoData>({
@@ -45,14 +45,34 @@ const cryptocurrencySchema = new mongoose.Schema<ICryptoData>({
     },
     vwap24Hr: {
         type: String,
-        required: false // This field might not be available for all cryptocurrencies
+        required: false 
     },
     explorer: {
         type: String,
-        required: false // This field might not be necessary or available for all cryptocurrencies
+        required: false 
     }
 }, { timestamps: true });
 
-const Cryptocurrency = mongoose.model<ICryptoData>('Cryptocurrency', cryptocurrencySchema);
 
-export default Cryptocurrency;
+
+ // Schema for Crypto History
+const CryptoHistorySchema = new mongoose.Schema<ICryptoHistoryData>({
+    cryptocurrency: {
+        type: String,
+        required: true,
+        ref: 'Cryptocurrency' // Reference to the Cryptocurrency model
+    },
+    priceUsd: {
+        type: String,
+        required: true
+    },
+    time: {
+        type: Number,
+        required: true
+    }
+}, { timestamps: true });
+ const Cryptocurrency = mongoose.model<ICryptoData>('Cryptocurrency', cryptocurrencySchema);
+ const CryptoHistory = mongoose.model<ICryptoHistoryData>('CryptoHistory', CryptoHistorySchema);
+
+
+export  { Cryptocurrency, CryptoHistory}

@@ -1,4 +1,4 @@
-import Cryptocurrency from '@/models/cryptos'
+import {Cryptocurrency }from '@/models/cryptos'
 import { ICryptoData } from '@/utils/interface/crytposInterface';
 
 

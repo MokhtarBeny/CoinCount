@@ -1,4 +1,6 @@
-export interface ICryptoData {
+import { Document } from "mongoose";
+
+export interface ICryptoData extends Document {
   id: string;
   rank: string;
   symbol: string;
@@ -11,4 +13,11 @@ export interface ICryptoData {
   changePercent24Hr: string;
   vwap24Hr?: string;
   explorer?: string;
+}
+
+// Interface for AssetHistory
+  export interface ICryptoHistoryData extends Document {
+  cryptocurrency: string; // Reference to the cryptocurrency by name
+  priceUsd: string;
+  time: number; // Timestamp of the historical data
 }
