@@ -8,6 +8,7 @@ import axiosInstance from "@/utils/axios/axiosConfig";
 import { login } from "@/store/slices/authSlice";
 import { SessionProvider, useSession } from "next-auth/react";
 import {NextUIProvider} from "@nextui-org/react";
+import RssFeed from "./article/RssCard";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const dispatch = useDispatch();
