@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import Cryptocurrency from '../models/cryptos'
+import {Cryptocurrency} from '../models/cryptos'
 
 
 // Get Crypto Data

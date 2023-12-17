@@ -1,6 +1,6 @@
 import { Document } from "mongoose";
 
-export interface ICryptoData extends Document {
+export interface ICryptoData {
   id: string;
   rank: string;
   symbol: string;
@@ -16,7 +16,7 @@ export interface ICryptoData extends Document {
 }
 
 // Interface for AssetHistory
-  export interface ICryptoHistoryData extends Document {
+  export interface ICryptoHistoryData  {
   cryptocurrency: string; // Reference to the cryptocurrency by name
   priceUsd: string;
   time: number; // Timestamp of the historical data
