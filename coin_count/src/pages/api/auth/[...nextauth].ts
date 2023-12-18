@@ -1,4 +1,4 @@
-import axiosInstance from "@/utils/axios/axiosConfig";
+import getAxiosInstance from "@/utils/axios/getAxiosInstance";
 import NextAuth from "next-auth"
 import GithubProvider from "next-auth/providers/github"
 
@@ -12,6 +12,7 @@ export default NextAuth({
   callbacks: {
     async signIn(user, account, profile) {
       try {
+        const axiosInstance = getAxiosInstance();
         const res = await axiosInstance.post("/social-signin", user);
         const { token } = res.data;
         if (!token) {
