@@ -45,33 +45,41 @@ const cryptocurrencySchema = new mongoose.Schema<ICryptoData>({
     },
     vwap24Hr: {
         type: String,
-        required: false 
+        required: false
     },
     explorer: {
         type: String,
-        required: false 
+        required: false
     }
-}, { timestamps: true });
+});
 
 
 // History record structure
-const historyRecordSchema =  new mongoose.Schema({
+const historyRecordSchema = new mongoose.Schema({
     priceUsd: Number,
     time: Number
 }, { _id: false });
 
- // Schema for Crypto History
+// Schema for Crypto History
 const CryptocurrencyHistoriesSchema = new mongoose.Schema({
     cryptocurrency: {
         type: String,
         ref: 'Cryptocurrency',
         required: true
     },
-    histories:  [historyRecordSchema]
-    
+    priceUsd: {
+        type: String,
+        require: true
+    },
+    time: {
+        type: Number,
+        require: true,
+        unique: true
+    },
+
 });
- const Cryptocurrency = mongoose.model<ICryptoData>('Cryptocurrency', cryptocurrencySchema);
- const CryptoHistory = mongoose.model<ICryptoHistoryData>('CryptoHistory', CryptocurrencyHistoriesSchema);
+const Cryptocurrency = mongoose.model<ICryptoData>('Cryptocurrency', cryptocurrencySchema);
+const CryptoHistory = mongoose.model<ICryptoHistoryData>('CryptoHistory', CryptocurrencyHistoriesSchema);
 
 
-export  { Cryptocurrency, CryptoHistory}
+export { Cryptocurrency, CryptoHistory }
