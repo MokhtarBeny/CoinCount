@@ -24,8 +24,7 @@ interface LoginForm {
 }
 
 const LoginPage: React.FC = () => {
-  const axiosInstance = getAxiosInstance();
-  const { data, status, session } = useSession();
+  const axiosInstance = getAxiosInstance(); 
   const router = useRouter();
   const auth = useSelector((state: any) => state.auth);
   const dispatch = useDispatch();
@@ -177,7 +176,7 @@ const LoginPage: React.FC = () => {
         </div>
 
         <div className="mt-4 flex">
-          <p className="text-gray-600 mr-2">Don't have an account?</p>
+          <p className="text-gray-600 mr-2">Don&lsquo;t have an account?</p>
           <Link
             href={"/register"}
             className="text-blue-500 hover:underline focus:outline-none"

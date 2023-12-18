@@ -10,7 +10,7 @@ export default NextAuth({
     }),
   ],
   callbacks: {
-    async signIn(user, account, profile) {
+    async signIn({user, account, profile}) {
       try {
         const axiosInstance = getAxiosInstance();
         const res = await axiosInstance.post("/social-signin", user);
