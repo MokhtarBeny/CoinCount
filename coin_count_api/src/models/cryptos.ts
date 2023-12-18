@@ -1,5 +1,5 @@
 
-import { ICryptoData } from '@/utils/interface/crytposInterface';
+import { ICryptoData } from '../utils/interface/crytposInterface';
 
 import mongoose from 'mongoose';
 const cryptocurrencySchema = new mongoose.Schema<ICryptoData>({
