@@ -2,6 +2,7 @@ import { CryptoHistory, Cryptocurrency } from '../../models/cryptos'
 import { ICryptoData, ICryptoHistoryData } from '../../utils/interface/crytposInterface';
 import logger from '../logger';
 
+
 let isInitialRun = true;
 
 export const addCryptoDataList = async (cryptoDataList: ICryptoData[]): Promise<void> => {
