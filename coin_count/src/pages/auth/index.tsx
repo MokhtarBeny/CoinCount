@@ -1,18 +1,19 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import axiosInstance from "@/utils/axios/axiosConfig";
 import { useDispatch } from "react-redux";
 import { login } from "@/store/slices/authSlice";
 import storage from "@/utils/auth/localStorage";
+import getAxiosInstance from "@/utils/axios/getAxiosInstance";
 
 const AuthPage = () => {
+  const axiosInstance = getAxiosInstance();
   const { query } = useRouter();
   const dispatch = useDispatch();
   const router = useRouter();
 
   const refreshMyToken = async (token: string) => {
     try {
-      await storage.saveToLocalStorage("t", token);
+      localStorage.setItem("t", token);
       const resp = await axiosInstance.get("/refresh_token", {
         params: { token },
       });

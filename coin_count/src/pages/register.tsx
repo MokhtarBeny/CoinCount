@@ -8,10 +8,10 @@ import {
   GithubFilled,
   GoogleCircleFilled,
 } from "@ant-design/icons";
-import axiosInstance from "@/utils/axios/axiosConfig";
 import storage from "@/utils/auth/localStorage";
 import { login } from "@/store/slices/authSlice";
 import { signIn } from "next-auth/react";
+import getAxiosInstance from "@/utils/axios/getAxiosInstance";
 
 interface RegisterForm {
   username: string;
@@ -34,6 +34,7 @@ const RegisterPage: React.FC = () => {
   const [error, setError] = useState<string>("");
 
   const handleRegister = async (e: React.FormEvent) => {
+    const axiosInstance = getAxiosInstance();
     setError("");
     e.preventDefault();
     try {

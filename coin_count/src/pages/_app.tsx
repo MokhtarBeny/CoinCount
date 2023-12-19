@@ -1,14 +1,16 @@
+"use client";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { wrapper } from "../store/store";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import storage from "@/utils/auth/localStorage";
-import axiosInstance from "@/utils/axios/axiosConfig";
 import { login } from "@/store/slices/authSlice";
 import { SessionProvider, useSession } from "next-auth/react";
+
 import {NextUIProvider} from "@nextui-org/react";
 import Layout from "@/layout";
+
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const dispatch = useDispatch();
@@ -19,6 +21,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     if (t) {
       const refreshMyToken = async () => {
         try {
+          const axiosInstance = getAxiosInstance();
           const resp = await axiosInstance.get("/refresh_token");
           let { token, user } = resp.data;
           user = {
@@ -37,6 +40,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     }
   }, []);
   return (
+
     <NextUIProvider> 
      <SessionProvider session={session}>
       <Layout>
@@ -45,9 +49,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
       </Layout>
     </SessionProvider>
     </NextUIProvider>
-
   );
-
 }
 
 export default wrapper.withRedux(MyApp);

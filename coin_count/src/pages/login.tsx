@@ -1,6 +1,4 @@
 import { login } from "@/store/slices/authSlice";
-import storage from "@/utils/auth/localStorage";
-import axiosInstance from "@/utils/axios/axiosConfig";
 import {
   EyeInvisibleOutlined,
   EyeOutlined,
@@ -18,6 +16,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import getAxiosInstance from "@/utils/axios/getAxiosInstance";
 
 interface LoginForm {
   email: string;
@@ -25,7 +24,7 @@ interface LoginForm {
 }
 
 const LoginPage: React.FC = () => {
-  const { data, status, session } = useSession();
+  const axiosInstance = getAxiosInstance(); 
   const router = useRouter();
   const auth = useSelector((state: any) => state.auth);
   const dispatch = useDispatch();
@@ -38,7 +37,7 @@ const LoginPage: React.FC = () => {
   const handleLogin = async (e: any) => {
     e.preventDefault();
     try {
-      console.log(form);
+      const axiosInstance = getAxiosInstance();
       const res = await axiosInstance.post("/login", form);
       let { token, user } = res.data;
       user = {
@@ -55,8 +54,10 @@ const LoginPage: React.FC = () => {
           })
         );
       }
+
       await storage.saveToLocalStorage("t", token);
       router.push("/")
+
     } catch (err: any) {
       setError(err.response.data.message);
     }
@@ -179,7 +180,7 @@ const LoginPage: React.FC = () => {
         </div>
 
         <div className="mt-4 flex">
-          <p className="text-gray-600 mr-2">Don't have an account?</p>
+          <p className="text-gray-600 mr-2">Don&lsquo;t have an account?</p>
           <Link
             href={"/register"}
             className="text-blue-500 hover:underline focus:outline-none"
