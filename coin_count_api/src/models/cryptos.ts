@@ -1,5 +1,5 @@
 
-import { ICryptoData, ICryptoHistoryData } from '@/utils/interface/crytposInterface';
+import { ICryptoData, ICryptoHistoryData } from '../utils/interface/crytposInterface';
 
 import mongoose from 'mongoose';
 const cryptocurrencySchema = new mongoose.Schema<ICryptoData>({
@@ -54,11 +54,6 @@ const cryptocurrencySchema = new mongoose.Schema<ICryptoData>({
 });
 
 
-// History record structure
-const historyRecordSchema = new mongoose.Schema({
-    priceUsd: Number,
-    time: Number
-}, { _id: false });
 
 // Schema for Crypto History
 const CryptocurrencyHistoriesSchema = new mongoose.Schema({

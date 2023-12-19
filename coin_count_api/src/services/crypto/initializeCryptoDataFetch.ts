@@ -1,4 +1,4 @@
-import logger from "@/utils/logger";
+import logger from "../../utils/logger";
 import CryptoApiCalls from "./cryptoApiCalls";
 
 export const cryptoDataFetch = async () => {

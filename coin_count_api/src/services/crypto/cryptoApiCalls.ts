@@ -63,7 +63,7 @@ class CryptoApiCalls {
 
 		// Fetch and store asset history for each cryptocurrency
 		for (const crypto of initialData) {
-			const CryptoHistory = await this.fetchCryptoHistory(crypto.id, "m1");
+			const CryptoHistory = await this.fetchCryptoHistory(crypto.id, "h1");
 			if (CryptoHistory.length > 0) {
 				await addCryptoHistory(CryptoHistory, crypto.id);
 				logger.info(`Asset history for ${crypto.name} fetched and stored.`);
@@ -71,7 +71,7 @@ class CryptoApiCalls {
 		}
 
 
-		cron.schedule("* */1 * * *", async () => {
+		cron.schedule("* * 1 * *", async () => {
 			logger.info("Fetching and updating cryptocurrency data...");
 
 			try {
@@ -79,8 +79,8 @@ class CryptoApiCalls {
 
 				let currentDate = Date.now();
 				let oneHourBefore = Date.now() - 3600 * 1000;
-				let oneMinuteBefore = Date.now() - 60 * 1000;
-				let oneDayBefore = Date.now() - 24 * 60 * 60 * 1000;
+				// let oneMinuteBefore = Date.now() - 60 * 1000;
+				// let oneDayBefore = Date.now() - 24 * 60 * 60 * 1000;
 
 				if (cryptoDataList.length > 0) {
 					await addCryptoDataList(cryptoDataList);
@@ -88,12 +88,12 @@ class CryptoApiCalls {
 
 					for (const crypto of cryptoDataList) {
 						try {
-							const minuteCryptoHistory = await this.fetchCryptoHistory(
+							const hourCryptoHistory = await this.fetchCryptoHistory(
 								crypto.id,
-								`m1&start=${oneMinuteBefore}&end=${currentDate}`
-							); // 'm1' for minute-level data
-							if (minuteCryptoHistory.length > 0) {
-								await addCryptoHistory(minuteCryptoHistory, crypto.id);
+								`h1&start=${oneHourBefore}&end=${currentDate}`
+							);
+							if (hourCryptoHistory.length > 0) {
+								await addCryptoHistory(hourCryptoHistory, crypto.id);
 								logger.info(
 									`Minute-level cryptocurrency history for ${crypto.name} updated successfully.`
 								);
