@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from "../models/users"
+import mongoose from 'mongoose';
 const JWT_SECRET = process.env.JWT_SECRET || 'SECRET'; // Use an environment variable
 
 const generateJwt = (userId: string): string => {
@@ -31,7 +32,7 @@ export const register = async (req: Request, res: Response): Promise<Response> =
         const user = new User({ username, email, password });
         await user.save();
         user.password = undefined;
-        const token = generateJwt(user._id);
+        const token = generateJwt(user._id.toString());
         return res.status(201).json({ message: 'User created successfully', token, user });
     } catch (error) {
         return res.status(500).json({ message: 'Server error', error: error });
@@ -48,13 +49,14 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
         // Check password
-        const isMatch = await bcrypt.compare(password, user.password);
+        if (!user.password) return res.status(400).json({ message: 'Password not found' });
+        const isMatch = await bcrypt.compare(password, user.password.toString());
         if (!isMatch) {
             return res.status(400).json({ message: 'Invalid credentials111111' });
         }
         // remove user.password;
         user.password = undefined;
-        const token = generateJwt(user._id);
+        const token = generateJwt(user._id.toString());
         return res.json({ message: 'Logged in successfully', token, user });
     } catch (error) {
         return res.status(500).json({ message: 'Server error' });
@@ -77,7 +79,7 @@ export const refreshToken = async (req: Request, res: Response): Promise<Respons
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-        const newToken = generateJwt(user._id);
+        const newToken = generateJwt(user._id.toString());
         user.password = undefined;
         return res.json({ message: 'Token refreshed successfully', token: newToken, user });
     } catch (error) {
@@ -127,7 +129,7 @@ export const socialSignIn = async (req: Request, res: Response): Promise<Respons
                 await dbUser.save();
             }
         }
-        const token = generateJwt(dbUser._id);
+        const token = generateJwt(dbUser._id.toString());
         return res.status(200).json({
             message: 'Social sign-in successful',
             token,
