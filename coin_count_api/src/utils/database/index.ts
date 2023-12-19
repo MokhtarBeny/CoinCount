@@ -8,7 +8,7 @@ const dbHost = process.env.DB_HOST as string;
 const dbName = process.env.DB_NAME as string;
 
 const genConnectionString = (db: string = dbName): string => {
-  return `mongodb+srv://${dbUser}:${dbPassword}@${dbHost}/${db}?retryWrites=true&w=majority`;
+  return `mongodb+srv://${dbUser}:${dbPassword}@${dbHost}/${db}Dev?retryWrites=true&w=majority`;
 }
 
 const options: mongoose.ConnectOptions = {
