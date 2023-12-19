@@ -8,6 +8,7 @@ import axiosInstance from "@/utils/axios/axiosConfig";
 import { login } from "@/store/slices/authSlice";
 import { SessionProvider, useSession } from "next-auth/react";
 import {NextUIProvider} from "@nextui-org/react";
+import Layout from "@/layout";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const dispatch = useDispatch();
@@ -38,7 +39,10 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
     <NextUIProvider> 
      <SessionProvider session={session}>
+      <Layout>
       <Component {...pageProps} />
+
+      </Layout>
     </SessionProvider>
     </NextUIProvider>
 
