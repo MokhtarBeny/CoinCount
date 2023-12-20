@@ -9,5 +9,7 @@ router.get("/refresh_token", controller.refreshToken)
 router.post(`/register`, controller.register)
 router.post(`/login`, controller.login)
 router.post(`/social-signin`, controller.socialSignIn)
+router.put('/auth/change-password', controller.changePassword)
+router.put('/auth/change-username', controller.changeUsername)
 router.get(`/${ENDPOINT}/`, controller.getUsers);
 module.exports = router;

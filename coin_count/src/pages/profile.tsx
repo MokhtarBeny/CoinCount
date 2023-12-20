@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { EditFilled, EditOutlined } from "@ant-design/icons";
 import { Image, Spacer } from "@nextui-org/react";
+import getAxiosInstance from "@/utils/axios/getAxiosInstance";
+import { login } from "@/store/slices/authSlice";
 
 const ProfilePage: React.FC = () => {
+  const dispatch = useDispatch();
+  const axiosInstance = getAxiosInstance();
   const router = useRouter();
   const auth = useSelector((state: any) => state.auth);
   const [user, setUser] = useState({
@@ -38,11 +42,77 @@ const ProfilePage: React.FC = () => {
     setUser({ ...user, [name]: value });
   };
 
-  const toggleEditMode = () => {
-    setIsEditable(!isEditable);
+  const toggleEditMode = (type: string) => {
+    if (type === "user") {
+      setIsEditable((prev) => ({
+        ...prev,
+        user: !prev.user,
+      }));
+    }
+    if (type === "password") {
+      setIsEditable((prev) => ({
+        ...prev,
+        password: !prev.password,
+      }));
+    }
   };
 
-  console.log(auth.user);
+  const savePassword = async () => {
+    if (user.password !== user.confirmPassword) {
+      alert("Password and Confirm Password do not match");
+      return;
+    }
+    try {
+      const res = await axiosInstance.put("/auth/change-password", {
+        password: user.password,
+      });
+
+      console.log(res.data);
+      setUser((prevUser) => ({
+        ...prevUser,
+        password: "",
+        confirmPassword: "",
+      }));
+
+      let data = res.data;
+
+      dispatch(
+        login({
+          token: data.token,
+          user: data.user,
+        })
+      );
+      toggleEditMode("password");
+    } catch (err) {
+      alert(err.response.data.msg);
+    }
+  };
+
+  const saveUser = async () => {
+    try {
+      const res = await axiosInstance.put("/auth/change-username", {
+        username: user.username,
+      });
+
+      console.log(res.data);
+      setUser((prevUser) => ({
+        ...prevUser,
+        username: res.data.user.username,
+      }));
+
+      let data = res.data;
+
+      dispatch(
+        login({
+          token: data.token,
+          user: data.user,
+        })
+      );
+      toggleEditMode("user");
+    } catch (err) {
+      alert(err.response.data.msg);
+    }
+  };
 
   return (
     <div className="container mx-auto p-6">
@@ -98,8 +168,12 @@ const ProfilePage: React.FC = () => {
                   name="username"
                   value={user.username}
                   onChange={handleInputChange}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  readOnly={!isEditable}
+                  className={`shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none ${
+                    isEditable.user
+                      ? "text-gray-700 focus:shadow-outline"
+                      : "text-gray-500 bg-gray-200 cursor-not-allowed"
+                  }`}
+                  readOnly={!isEditable.user}
                 />
               </div>
 
@@ -116,8 +190,12 @@ const ProfilePage: React.FC = () => {
                   name="email"
                   value={user.email}
                   onChange={handleInputChange}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  readOnly={!isEditable}
+                  className={`shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none ${
+                    false
+                      ? "text-gray-700 focus:shadow-outline"
+                      : "text-gray-500 bg-gray-200 cursor-not-allowed"
+                  }`}
+                  readOnly={true}
                 />
               </div>
               <div className="border-b border-gray-200 " />
@@ -133,8 +211,12 @@ const ProfilePage: React.FC = () => {
                   name="password"
                   value={user.password}
                   onChange={handleInputChange}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  readOnly={!isEditable}
+                  className={`shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none ${
+                    isEditable.password
+                      ? "text-gray-700 focus:shadow-outline"
+                      : "text-gray-500 bg-gray-200 cursor-not-allowed"
+                  }`}
+                  readOnly={!isEditable.password}
                 />
               </div>
 
@@ -150,18 +232,32 @@ const ProfilePage: React.FC = () => {
                   name="confirmPassword"
                   value={user.confirmPassword}
                   onChange={handleInputChange}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  readOnly={!isEditable}
+                  className={`shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none ${
+                    isEditable.password
+                      ? "text-gray-700 focus:shadow-outline"
+                      : "text-gray-500 bg-gray-200 cursor-not-allowed"
+                  }`}
+                  readOnly={!isEditable.password}
                 />
               </div>
             </div>
             <div className="mt-4">
-              <button
-                onClick={toggleEditMode}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              >
-                {isEditable ? "Save Changes" : "Edit Profile"}
-              </button>
+              {isEditable.user && (
+                <button
+                  onClick={saveUser}
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4"
+                >
+                  Save Changes
+                </button>
+              )}
+              {isEditable.password && (
+                <button
+                  onClick={savePassword}
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                >
+                  Change Password
+                </button>
+              )}
             </div>
           </div>
         </div>
