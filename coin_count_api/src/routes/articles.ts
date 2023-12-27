@@ -15,9 +15,8 @@ const controller = require(`../controllers/${ENDPOINT}`);
 router.get(`/${ENDPOINT}/`,
     async (req, res) => {
 
-            const response = await axios.get("https://cointelegraph.com/rss");
-            const xmlData = response.data;
-            console.log(xmlData)
+        const response = await axios.get("https://www.coindesk.com/arc/outboundfeeds/rss/");            
+        const xmlData = response.data;
 
             parseString(xmlData, (err, result) => {
                 // if (err) {
@@ -34,19 +33,18 @@ router.get(`/${ENDPOINT}/`,
                     console.error(err);
                     res.status(500).send({ error: "Error parsing XML" });
                 } else {
-                    const articles = result.rss.channel[0].item.map((item: { title: any[]; description: any[]; pubDate: any[]; author: any[]; img: any[]; }) => ({
+                    const articles = result.rss.channel[0].item.map((item: { title: any[]; description: any[]; pubDate: any[]; author: any[]; img: any[]; link:any[]; }) => (
+                        
+                         {
                         title: item.title[0],
                         description: item.description[0],
                         date: item.pubDate[0],
-                        //image: item.enclosure[0],
-                        // author: item.author[0],
-                        //image : extractImageURLFromDescription(item.img[0]),
-                        // image: item.enclosure ? item.enclosure[0].$.url : null,
-                        // author: item.author ? item.author[0] : null,
+                        link : item.link[0],
+                        image: item['media:content'][0]['$']['url'],
+                        author: item["dc:creator"][0],
                     }));
-                    console.log(result.rss.channel)
+                    res.send(articles)
     
-                    res.send(articles);
                 }   
             });
 
