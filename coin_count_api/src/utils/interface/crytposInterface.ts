@@ -1,4 +1,3 @@
-import { Document } from "mongoose";
 
 export interface ICryptoData {
   id: string;
@@ -16,7 +15,7 @@ export interface ICryptoData {
 }
 
 // Interface for AssetHistory
-  export interface ICryptoHistoryData  {
+export interface ICryptoHistoryData {
   cryptocurrency: string; // Reference to the cryptocurrency by name
   priceUsd: string;
   time: number; // Timestamp of the historical data
