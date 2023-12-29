@@ -1,8 +1,7 @@
-import { Action, PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { Action, createSlice } from '@reduxjs/toolkit';
 import { HYDRATE } from 'next-redux-wrapper';
 import { fetchCryptoData, fetchCryptoDataHistory, fetchSingleCryptoData } from '../thunks/cryptoThunk';
 import { ICryptoData, ICryptoHistoryData } from '@/utils/interface/cryptosInterface';
-import { staticGenerationAsyncStorage } from 'next/dist/client/components/static-generation-async-storage.external';
 
 export interface CryptoState {
      crypto: ICryptoData | null;

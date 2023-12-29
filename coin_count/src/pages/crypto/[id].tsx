@@ -5,6 +5,8 @@ import { fetchCryptoDataHistory, fetchSingleCryptoData } from '@/store/thunks/cr
 import { selectCryptoHistory, selectSingleCrypto } from '@/store/slices/cryptoSlice';
 import { AppDispatch, AppState } from '@/store/store';
 import { Card, CardHeader, CardBody, CardFooter, Image, Button } from "@nextui-org/react";
+import CryptoChart from '../components/cryptoChart';
+import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
 
 export default function CryptoPage() {
      const router = useRouter();
@@ -13,6 +15,18 @@ export default function CryptoPage() {
      const crypto = useSelector(selectSingleCrypto);
      const cryptoHistory = useSelector(selectCryptoHistory)
      const loading = useSelector((state: AppState) => state.crypto.loading);
+
+     type ChangeIndicatorProps = {
+          changePercent24Hr: number;
+     };
+
+
+     const ChangeIndicator: React.FC<ChangeIndicatorProps> = ({ changePercent24Hr }) => {
+          const isPositive = changePercent24Hr > 0;
+          return isPositive ? <CaretUpOutlined className="text-green-500" /> : <CaretDownOutlined className="text-red-500" />;
+     };
+
+
 
      useEffect(() => {
           if (id) {
@@ -33,16 +47,16 @@ export default function CryptoPage() {
 
      return (
           <>
-               <h1>{crypto.name}</h1>
-               <p>{JSON.stringify(crypto)}</p>
-               <div className="max-w-[900px] gap-2 grid grid-cols-12 grid-rows-2 px-8">
+               <div className="  gap-2 grid grid-cols-12 grid-rows-2 px-8">
                     <Card isFooterBlurred className="w-full h-[300px] col-span-12 sm:col-span-5">
                          <CardHeader className="absolute z-10 top-1 flex justify-between ">
                               <div><p className="text-tiny text-indigo-400 uppercase font-bold">{crypto.symbol}</p>
                                    <h4 className="text-black font-medium text-2xl">{crypto.name}</h4></div>
 
                               <div> <p className="text-tiny text-indigo-400 uppercase font-bold">Price USD</p>
-                                   <h4 className="text-black font-medium text-2xl">{parseFloat(crypto.priceUsd).toFixed(2)}$</h4></div>
+                                   <h4 className="text-black font-medium text-2xl">{parseFloat(crypto.priceUsd).toFixed(2)}$</h4>
+                                   <p className="text-tiny text-indigo-400 uppercase font-bold">Change 24h</p>
+                                   <h4 className={`font-medium text-lg ${parseFloat(crypto.changePercent24Hr) > 0 ? 'text-green-500' : 'text-red-500'}`}>{parseFloat(crypto.changePercent24Hr).toFixed(2)}%  <ChangeIndicator changePercent24Hr={crypto.changePercent24Hr} /></h4></div>
                          </CardHeader>
                          <CardBody className='justify-center items-center'>
                               <h4 className='text-indigo-800 font-bold text-2xl'>{crypto.rank}</h4>
@@ -61,67 +75,28 @@ export default function CryptoPage() {
                               </Button>
                          </CardFooter>
                     </Card>
-                    <Card isFooterBlurred className="w-full h-[300px] col-span-12 sm:col-span-7">
-                         <CardHeader className="absolute z-10 top-1 flex-col items-start">
-                              <p className="text-tiny text-white/60 uppercase font-bold">Your day your way</p>
-                              <h4 className="text-white/90 font-medium text-xl">Your checklist for better sleep</h4>
-                         </CardHeader>
+                    <Card isFooterBlurred className="col-span-12 row-span-2 sm:col-span-7">
                          <CardBody>
-                              <p></p>
+                              <CryptoChart cryptoHistoryData={cryptoHistory} />
                          </CardBody>
-                         <CardFooter className="absolute bg-black/40 bottom-0 z-10 border-t-1 border-default-600 dark:border-default-100">
-                              <div className="flex flex-grow gap-2 items-center">
-                                   <Image
-                                        alt="Breathing app icon"
-                                        className="rounded-full w-10 h-11 bg-black"
-                                        src="/images/breathing-app-icon.jpeg"
-                                   />
-                                   <div className="flex flex-col">
-                                        <p className="text-tiny text-white/60">Breathing App</p>
-                                        <p className="text-tiny text-white/60">Get a good night's sleep.</p>
-                                   </div>
-                              </div>
-                              <Button radius="full" size="sm">Get App</Button>
-                         </CardFooter>
                     </Card>
-                    <Card className="col-span-12 sm:col-span-4 h-[300px]">
-                         <CardHeader className="absolute z-10 top-1 flex-col !items-start">
-                              <p className="text-tiny text-white/60 uppercase font-bold">What to watch</p>
-                              <h4 className="text-white font-medium text-large">Stream the Acme event</h4>
-                         </CardHeader>
-                         <Image
-                              removeWrapper
-                              alt="Card background"
-                              className="z-0 w-full h-full object-cover"
-                              src="/images/card-example-4.jpeg"
-                         />
-                    </Card>
-                    <Card className="col-span-12 sm:col-span-4 h-[300px]">
-                         <CardHeader className="absolute z-10 top-1 flex-col !items-start">
-                              <p className="text-tiny text-white/60 uppercase font-bold">Plant a tree</p>
-                              <h4 className="text-white font-medium text-large">Contribute to the planet</h4>
-                         </CardHeader>
-                         <Image
-                              removeWrapper
-                              alt="Card background"
-                              className="z-0 w-full h-full object-cover"
-                              src="/images/card-example-3.jpeg"
-                         />
-                    </Card>
-                    <Card className="col-span-12 sm:col-span-4 h-[300px]">
-                         <CardHeader className="absolute z-10 top-1 flex-col !items-start">
-                              <p className="text-tiny text-white/60 uppercase font-bold">Supercharged</p>
-                              <h4 className="text-white font-medium text-large">Creates beauty like a beast</h4>
-                         </CardHeader>
-                         <Image
-                              removeWrapper
-                              alt="Card background"
-                              className="z-0 w-full h-full object-cover"
-                              src="/images/card-example-2.jpeg"
-                         />
+                    <Card className="col-span-12 sm:col-span-5 h-full  items-center  justify-center content-center flex flex-row ">
+                         <CardBody className='flex'><p className="text-tin text-indigo-400 font-bold">Volume (24h)</p>
+                              <h4 className=" font-medium text-large">{parseFloat(crypto.volumeUsd24Hr).toFixed(2)}$</h4>
+                              <p className="text-tin  font-bold text-indigo-400">VWap 24h</p>
+                              <h4 className=" font-medium text-large">{parseFloat(crypto.vwap24Hr).toFixed(2)}$</h4>
+
+                         </CardBody>
+                         <CardBody className='flex '>
+                              <div className=''> <p className="text-tin  font-bold text-indigo-400">Market Cap</p>
+                                   <h4 className=" font-medium text-large ">{parseFloat(crypto.marketCapUsd).toFixed(2)}$</h4>
+                                   <p className="text-tin  font-bold text-indigo-400">Supply</p>
+                                   <h4 className=" font-medium text-large">{parseFloat(crypto.supply)} {crypto.symbol}</h4></div>
+
+                         </CardBody>
                     </Card>
                </div>
-               <p>{JSON.stringify(cryptoHistory)}</p>
+
 
           </>
      );
