@@ -1,3 +1,4 @@
+
 import { CryptoHistory, Cryptocurrency } from '../../models/cryptos'
 import { ICryptoData, ICryptoHistoryData } from '../../utils/interface/crytposInterface';
 import logger from '../logger';

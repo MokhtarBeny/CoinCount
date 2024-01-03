@@ -21,6 +21,10 @@
       "@/*": [
         "./src/*"
       ],
+      
+      "@/components/*": [
+        "./src/components/*"
+      ],
       "@/store/*": [
         "./src/store/*"
       ],

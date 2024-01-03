@@ -7,8 +7,10 @@ import { useDispatch } from "react-redux";
 import storage from "@/utils/auth/localStorage";
 import { login } from "@/store/slices/authSlice";
 import { SessionProvider, useSession } from "next-auth/react";
-import { NextUIProvider } from "@nextui-org/react";
-import getAxiosInstance from "@/utils/axios/getAxiosInstance";
+
+import {NextUIProvider} from "@nextui-org/react";
+import Layout from "@/layout";
+
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const dispatch = useDispatch();
@@ -38,10 +40,14 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     }
   }, []);
   return (
-    <NextUIProvider>
-      <SessionProvider session={session}>
-        <Component {...pageProps} />
-      </SessionProvider>
+
+    <NextUIProvider> 
+     <SessionProvider session={session}>
+      <Layout>
+      <Component {...pageProps} />
+
+      </Layout>
+    </SessionProvider>
     </NextUIProvider>
   );
 }
