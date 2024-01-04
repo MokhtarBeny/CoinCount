@@ -1,20 +1,6 @@
 import mongoose from 'mongoose';
 const bcrypt = require('bcryptjs');
 
-const watchlistSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, 'Watchlist name is required'],
-    trim: true,
-    maxlength: [50, 'Watchlist name must be less than 50 characters']
-  },
-  cryptos: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Cryptocurrency'
-    }
-  ]
-});
 
 const socialAccountSchema = new mongoose.Schema({
   provider: String,
@@ -44,7 +30,7 @@ const userSchema = new mongoose.Schema({
     match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
   },
   socialAccounts: [socialAccountSchema],
-  watchlists: [watchlistSchema],
+  watchlist: [ { type: mongoose.Schema.Types.ObjectId, ref: 'Cryptocurrency' } ],
 }, { timestamps: true });
 
 userSchema.pre('save', async function (next) {

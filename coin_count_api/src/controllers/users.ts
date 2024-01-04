@@ -200,3 +200,125 @@ export const changeUsername = async (req: Request, res: Response): Promise<Respo
         return res.status(500).json({ message: 'Server error' });
     }
 }
+
+export const addToWatchlist = async (req: Request, res: Response): Promise<Response> => {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) {
+        return res.status(401).json({ message: 'No token provided' });
+    }
+
+    let decoded;
+    try {
+        decoded = verifyJwt(token);
+    } catch (error) {
+        return res.status(401).json({ message: 'Invalid token', error: error.message });
+    }
+
+    if (!decoded) {
+        return res.status(401).json({ message: 'Invalid token' });
+    }
+
+    try {
+        const user = await User.findById(decoded.userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        const { cryptoId } = req.params;
+        if (!mongoose.Types.ObjectId.isValid(cryptoId)) {
+            return res.status(400).json({ message: 'Invalid cryptocurrency ID' });
+        }
+        if (!user.watchlist.includes(cryptoId)) {
+            user.watchlist.push(cryptoId);
+            await user.save();
+
+        }
+        user.password = undefined;
+        return res.json({ message: 'Crypto added to watchlist successfully', user });
+    }
+    catch (error) {
+        console.log(error); 
+        return res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
+
+export const removeFromWatchlist = async (req: Request, res: Response): Promise<Response> => {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) {
+        return res.status(401).json({ message: 'No token provided' });
+    }
+    let decoded;
+    try {
+        decoded = verifyJwt(token);
+    } catch (error) {
+        return res.status(401).json({ message: 'Invalid token', error: error.message });
+    }
+    if (!decoded) {
+        return res.status(401).json({ message: 'Invalid token' });
+    }
+    try {
+        const user = await User.findById(decoded.userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        const cryptoId = req.params.cryptoId; // Assuming cryptoId is in the URL
+        if (!mongoose.Types.ObjectId.isValid(cryptoId)) {
+            return res.status(400).json({ message: 'Invalid cryptocurrency ID' });
+        }
+        user.watchlist = user.watchlist.filter(crypto => crypto.toString() !== cryptoId);
+        await user.save();
+        user.password = undefined; // Hide password
+        return res.json({ message: 'Crypto removed from watchlist successfully', user });
+    }
+    catch (error) {
+        console.log(error); 
+        return res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
+
+
+export const getWatchlist = async (req: Request, res: Response): Promise<Response> => {
+    const token = req.headers.authorization?.split(' ')[1]; // Assuming token is sent in the Authorization header
+    console.log(token);
+    if (!token) {
+        return res.status(401).json({ message: 'No token provided' });
+    }
+    const decoded = verifyJwt(token);
+    if (!decoded) {
+        return res.status(401).json({ message: 'Invalid token' });
+    }
+    try {
+        const user = await User.findById(decoded.userId).populate('watchlist.cryptos');
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        return res.json(user.watchlist);
+    }
+    catch (error) {
+        return res.status(500).json({ message: 'Server error' });
+    }
+}
+export const resetWatchlist = async (req: Request, res: Response): Promise<Response> => {
+    const token = req.headers.authorization?.split(' ')[1]; // Assuming token is sent in the Authorization header
+    console.log(token);
+    if (!token) {
+        return res.status(401).json({ message: 'No token provided' });
+    }
+    const decoded = verifyJwt(token);
+    if (!decoded) {
+        return res.status(401).json({ message: 'Invalid token' });
+    }
+    try {
+        const user = await User.findById(decoded.userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        user.watchlist = [];
+        await user.save();
+        user.password = undefined;
+        const newToken = generateJwt(user._id.toString());
+        return res.json({ message: 'Watchlist reset successfully', token: newToken, user });
+    }
+    catch (error) {
+        return res.status(500).json({ message: 'Server error' });
+    }
+}
