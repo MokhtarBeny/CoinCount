@@ -10,6 +10,7 @@ function decryptData(data: string): string {
 
 // Function to save data to localStorage
 function saveToLocalStorage(key: string, data: string): void {
+    
     if (typeof window !== 'undefined') {
         localStorage.setItem(key, data);
     }
