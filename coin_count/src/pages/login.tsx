@@ -42,7 +42,7 @@ const LoginPage: React.FC = () => {
       user = {
         username: user.username,
         email: user.email,
-        watchlists: user.watchlists,
+        watchlist: user.watchlist,
         id: user._id,
       };
       if (res.status === 200) {
