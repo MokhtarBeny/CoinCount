@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { EditFilled, EditOutlined } from "@ant-design/icons";
-import { Image, Spacer } from "@nextui-org/react";
+import { Avatar, Image, Spacer } from "@nextui-org/react";
 import getAxiosInstance from "@/utils/axios/getAxiosInstance";
-import { login } from "@/store/slices/authSlice";
+import { login, logout } from "@/store/slices/authSlice";
+import { toast } from "react-toastify";
 
 const ProfilePage: React.FC = () => {
   const dispatch = useDispatch();
@@ -16,7 +17,7 @@ const ProfilePage: React.FC = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    watchlists: [],
+    watchlist: [],
   });
   const [isEditable, setIsEditable] = useState({
     user: false,
@@ -59,23 +60,20 @@ const ProfilePage: React.FC = () => {
 
   const savePassword = async () => {
     if (user.password !== user.confirmPassword) {
-      alert("Password and Confirm Password do not match");
+      toast.error("Passwords do not match");
       return;
     }
     try {
       const res = await axiosInstance.put("/auth/change-password", {
         password: user.password,
       });
-
-      console.log(res.data);
       setUser((prevUser) => ({
         ...prevUser,
         password: "",
         confirmPassword: "",
       }));
-
       let data = res.data;
-
+      toast.success("Password changed successfully");
       dispatch(
         login({
           token: data.token,
@@ -84,7 +82,7 @@ const ProfilePage: React.FC = () => {
       );
       toggleEditMode("password");
     } catch (err) {
-      alert(err.response.data.msg);
+      toast.error("An error occured, please try again")
     }
   };
 
@@ -101,7 +99,7 @@ const ProfilePage: React.FC = () => {
       }));
 
       let data = res.data;
-
+      toast.success("Username changed successfully");
       dispatch(
         login({
           token: data.token,
@@ -110,9 +108,17 @@ const ProfilePage: React.FC = () => {
       );
       toggleEditMode("user");
     } catch (err) {
-      alert(err.response.data.msg);
+      toast.error("An error occured, please try again");
     }
   };
+
+  useEffect(() => {
+    if(!auth.user) {
+      router.push("/login");
+    }
+  }
+  , [router.route])
+
 
   return (
     <div className="container mx-auto p-6">
@@ -120,18 +126,29 @@ const ProfilePage: React.FC = () => {
         <div className="flex">
           {/* Right Side - Avatar and User Info (2/5) */}
           <div className="w-2/5 flex flex-col items-center justify-center">
-            <Image
-              isZoomed
-              isBlurred
-              width={300}
-              height={300}
+            <Avatar
+            classNames={{
+              base: "w-60 h-60 bg-gradient-to-br from-[#57C1FF] to-[#005BFF]",
+
+              icon: "text-black/80",
+            }}
               alt="User Avatar"
-              src="https://images.augustman.com/wp-content/uploads/sites/3/2022/12/22170208/untitled-design-2022-12-21t111850-107.jpeg"
             />
             <h3 className="text-xl font-semibold mt-3">
               {auth.user.username || ""}
             </h3>
             <p className="text-gray-500">{auth.user.email || ""}</p>
+            <button
+              onClick={() => {
+                dispatch(logout());
+                toast.success("Logged out successfully");
+                localStorage.removeItem("t");
+                router.push("/"); 
+              }}
+              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4"
+            >
+              Logout
+            </button>
           </div>
 
           <div className="w-3/5">
@@ -263,7 +280,7 @@ const ProfilePage: React.FC = () => {
         </div>
 
         <div className="border-t border-gray-200 pt-4 mt-4">
-          <h4 className="text-lg font-semibold mb-4">Watchlists</h4>
+          <h4 className="text-lg font-semibold mb-4">My Watchlist</h4>
         </div>
       </div>
     </div>
