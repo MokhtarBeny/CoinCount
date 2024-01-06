@@ -15,39 +15,40 @@ const controller = require(`../controllers/${ENDPOINT}`);
 router.get(`/${ENDPOINT}/`,
     async (req, res) => {
 
-        const response = await axios.get("https://www.coindesk.com/arc/outboundfeeds/rss/");            
+        const response = await axios.get("https://www.coindesk.com/arc/outboundfeeds/rss/");
         const xmlData = response.data;
 
-            parseString(xmlData, (err, result) => {
-                // if (err) {
-                //     console.error(err);
-                //     res.status(500).send({ error: "Error parsing XML" });
-                // } else 
-                // {
-                //     const articles =(result.rss.channel[0].item); 
-                //     //res.send(articles);
-                //     res.json({ articles });
-                // }
+        parseString(xmlData, (err, result) => {
+            // if (err) {
+            //     console.error(err);
+            //     res.status(500).send({ error: "Error parsing XML" });
+            // } else 
+            // {
+            //     const articles =(result.rss.channel[0].item); 
+            //     //res.send(articles);
+            //     res.json({ articles });
+            // }
 
-                if (err) {
-                    console.error(err);
-                    res.status(500).send({ error: "Error parsing XML" });
-                } else {
-                    const articles = result.rss.channel[0].item.map((item: { title: any[]; description: any[]; pubDate: any[]; author: any[]; img: any[]; link:any[]; }) => (
-                        
-                         {
+            if (err) {
+                console.error(err);
+                res.status(500).send({ error: "Error parsing XML" });
+            } else {
+                const articles = result.rss.channel[0].item.map((item: { title: any[]; description: any[]; pubDate: any[]; author: any[]; img: any[]; link: any[]; }) => (
+
+                    {
                         title: item.title[0],
                         description: item.description[0],
                         date: item.pubDate[0],
-                        link : item.link[0],
+                        link: item.link[0],
                         image: item['media:content'][0]['$']['url'],
                         author: item["dc:creator"][0],
+                    
                     }));
-                    res.send(articles)
-    
-                }   
-            });
+                res.send(articles)
+
+
+            }
+        });
 
     });
-
 module.exports = router;
