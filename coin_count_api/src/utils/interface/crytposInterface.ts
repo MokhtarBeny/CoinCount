@@ -1,3 +1,4 @@
+
 export interface ICryptoData {
   id: string;
   rank: string;
@@ -11,4 +12,12 @@ export interface ICryptoData {
   changePercent24Hr: string;
   vwap24Hr?: string;
   explorer?: string;
+  visibility?: boolean;
+}
+
+// Interface for AssetHistory
+export interface ICryptoHistoryData {
+  cryptocurrency: string; // Reference to the cryptocurrency by name
+  priceUsd: string;
+  time: number; // Timestamp of the historical data
 }

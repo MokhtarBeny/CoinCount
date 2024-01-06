@@ -1,6 +1,4 @@
 import { login } from "@/store/slices/authSlice";
-import storage from "@/utils/auth/localStorage";
-import axiosInstance from "@/utils/axios/axiosConfig";
 import {
   EyeInvisibleOutlined,
   EyeOutlined,
@@ -18,6 +16,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import getAxiosInstance from "@/utils/axios/getAxiosInstance";
 
 interface LoginForm {
   email: string;
@@ -25,7 +24,7 @@ interface LoginForm {
 }
 
 const LoginPage: React.FC = () => {
-  const { data, status, session } = useSession();
+  const axiosInstance = getAxiosInstance();
   const router = useRouter();
   const auth = useSelector((state: any) => state.auth);
   const dispatch = useDispatch();
@@ -38,13 +37,12 @@ const LoginPage: React.FC = () => {
   const handleLogin = async (e: any) => {
     e.preventDefault();
     try {
-      console.log(form);
       const res = await axiosInstance.post("/login", form);
       let { token, user } = res.data;
       user = {
         username: user.username,
         email: user.email,
-        watchlists: user.watchlists,
+        watchlist: user.watchlist,
         id: user._id,
       };
       if (res.status === 200) {
@@ -55,7 +53,10 @@ const LoginPage: React.FC = () => {
           })
         );
       }
+
       await storage.saveToLocalStorage("t", token);
+      router.push("/")
+
     } catch (err: any) {
       setError(err.response.data.message);
     }
@@ -137,23 +138,6 @@ const LoginPage: React.FC = () => {
           {error && (
             <p className="text-red-500 text-sm mt-2 text-center">{error}</p>
           )}
-          <div className="mt-4">
-            <p className="text-gray-600">Or sign in with:</p>
-            <div className="flex mt-2">
-              <button
-                className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 mr-2"
-                onClick={() => handleSocialLogin("facebook")}
-              >
-                Facebook
-              </button>
-              <button
-                className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
-                onClick={() => handleSocialLogin("google")}
-              >
-                Google
-              </button>
-            </div>
-          </div>
         </form>
         <div className="flex-row items-center justify-center">
           <p className="text-gray-600">Or sign in with:</p>
@@ -178,7 +162,7 @@ const LoginPage: React.FC = () => {
         </div>
 
         <div className="mt-4 flex">
-          <p className="text-gray-600 mr-2">Don't have an account?</p>
+          <p className="text-gray-600 mr-2">Don&lsquo;t have an account?</p>
           <Link
             href={"/register"}
             className="text-blue-500 hover:underline focus:outline-none"
