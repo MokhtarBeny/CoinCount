@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchCrypto, fetchCryptoHistory, fetchCryptos } from '../../utils/axios/fetchCrypto'; // Update the path
+import { changeCryptoVisibility } from '@/utils/axios/updateCrypto';
 
 export const fetchCryptoData = createAsyncThunk(
      'crypto/fetchCryptoData',
@@ -34,3 +35,15 @@ export const fetchCryptoDataHistory = createAsyncThunk(
           }
      }
 );
+
+export const updateCryptoVisibility = createAsyncThunk(
+     'crypto/changeVisibility', 
+     async(cryptoId: string, thunkAPI) => {
+          try {
+               const response = await changeCryptoVisibility(cryptoId);
+               return response
+          } catch (error: any) {
+               return thunkAPI.rejectWithValue(error.response.data);
+          }
+     }
+)

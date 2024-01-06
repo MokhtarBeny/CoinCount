@@ -49,6 +49,10 @@ const cryptocurrencySchema = new mongoose.Schema<ICryptoData>({
     explorer: {
         type: String,
         required: false
+    },
+    visibility: {
+        type: Boolean,
+        require: false
     }
 });
 

@@ -46,29 +46,4 @@ export const addCryptoHistory = async (assetHistories: ICryptoHistoryData[], cry
         throw error;
     }
 };
-// export const addCryptoHistory = async (assetHistories: ICryptoHistoryData[], crypto_id: string): Promise<void> => {
-//     try {
-//         // Check if the collection size exceeds the threshold
-//         const collectionCount = await CryptoHistory.countDocuments();
-//         if (collectionCount >= 500000) {
-//             await CryptoHistory.collection.drop();
-//             logger.info('CryptoHistory collection dropped due to size limit');
-//         }
 
-//         // Prepare bulk update operations
-//         const updateOps = assetHistories.map(history => ({
-//             updateOne: {
-//                 filter: { time: history.time },
-//                 update: { $set: { ...history, cryptocurrency: crypto_id } },
-//                 upsert: true
-//             }
-//         }));
-
-//         // Execute the bulk operation
-//         await CryptoHistory.bulkWrite(updateOps);
-//         logger.info(`Successfully added/updated ${assetHistories.length} asset history records.`);
-//     } catch (error) {
-//         logger.error('Error adding asset history to the database:', error);
-//         throw error;
-//     }
-// };

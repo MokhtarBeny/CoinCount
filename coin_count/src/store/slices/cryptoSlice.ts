@@ -1,6 +1,6 @@
 import { Action, createSlice } from '@reduxjs/toolkit';
 import { HYDRATE } from 'next-redux-wrapper';
-import { fetchCryptoData, fetchCryptoDataHistory, fetchSingleCryptoData } from '../thunks/cryptoThunk';
+import { fetchCryptoData, fetchCryptoDataHistory, fetchSingleCryptoData, updateCryptoVisibility } from '../thunks/cryptoThunk';
 import { ICryptoData, ICryptoHistoryData } from '@/utils/interface/cryptosInterface';
 
 export interface CryptoState {
@@ -67,6 +67,18 @@ export const cryptoSlice = createSlice({
                     state.loading = false;
                     state.error = action.payload;
                })
+               .addCase(updateCryptoVisibility.pending, (state) => {
+                    state.loading = true;
+                    state.error = null;
+                })
+                .addCase(updateCryptoVisibility.fulfilled, (state, action) => {
+                    state.loading = false;
+                    // No need to update anything else if you're not changing the state based on the response
+                })
+                .addCase(updateCryptoVisibility.rejected, (state, action) => {
+                    state.loading = false;
+                    state.error = action.payload || 'An error occurred';
+                })
                .addCase(HYDRATE, (state, action: Action & { payload: HydrateActionPayload }) => {
                     const nextState = {
                          ...state,
