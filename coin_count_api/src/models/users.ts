@@ -1,13 +1,12 @@
-import mongoose from 'mongoose';
-const bcrypt = require('bcryptjs');
+import mongoose from "mongoose";
+const bcrypt = require("bcryptjs");
+
 
 
 const socialAccountSchema = new mongoose.Schema({
-  provider: String,
-  providerAccountId: String
+	provider: String,
+	providerAccountId: String,
 });
-
-
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -39,7 +38,6 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 
 export default User;
-
