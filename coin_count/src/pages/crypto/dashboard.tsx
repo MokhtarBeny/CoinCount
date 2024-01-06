@@ -10,13 +10,13 @@ import { useDispatch, useSelector } from "react-redux";
 
 const DashboardPage: React.FC = () => {
   const [coins, setCoins] = useState([]);
-  const { auth } = useSelector((state: any) => state);
+  const { token } = useSelector((state: any) => state.auth);
   const dispatch = useDispatch();
   const [watchlist, setWatchlist] = useState<any[]>([]);
   const [canReqFav, setCanReqFav] = useState(true);
 
 
-  const generateTrendData = (changePercent, length = 5) => {
+  const generateTrendData = (changePercent: number, length = 5) => {
     let trendData = [50];
     for (let i = 1; i < length; i++) {
       trendData.push(
@@ -25,9 +25,9 @@ const DashboardPage: React.FC = () => {
     }
     return trendData;
   };
-  console.log(auth)
+
   const addToWatchList = async (coin: any) => {
-    if(auth.token  === "" || auth.token === null) {
+    if(token  === "" || token === null) {
       if(!canReqFav) return;
       toast.info("Please login to add to watchlist");
       setCanReqFav(false);
