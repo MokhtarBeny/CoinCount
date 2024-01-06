@@ -1,3 +1,4 @@
+
 import { ICryptoData, ICryptoHistoryData } from '../utils/interface/crytposInterface';
 
 import mongoose from 'mongoose';

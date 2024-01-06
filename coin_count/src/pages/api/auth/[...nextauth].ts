@@ -10,10 +10,11 @@ export default NextAuth({
     }),
   ],
   callbacks: {
-    async signIn({user, account, profile}) {
+    async signIn({ user, account, profile }) {
+      console.log("ACCOUNT : ", account)
       try {
         const axiosInstance = getAxiosInstance();
-        const res = await axiosInstance.post("/social-signin", user);
+        const res = await axiosInstance.post("/social-signin", { user, account });
         const { token } = res.data;
         if (!token) {
           return false;

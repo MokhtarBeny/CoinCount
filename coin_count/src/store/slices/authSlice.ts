@@ -4,7 +4,7 @@ import { HYDRATE } from "next-redux-wrapper";
 export interface User {
     username: string,
     email: string,
-    watchlists: any[]
+    watchlist: any[]
     id: string
 }
 
@@ -19,7 +19,7 @@ const initialState: AuthState = {
         id: "",
         username: "",
         email: "",
-        watchlists: []
+        watchlist: []
     }
 };
 
@@ -34,8 +34,12 @@ export const authSlice = createSlice({
         },
         logout: (state) => {
             state.token = "";
-            state.user = { id: "", username: "", email: "", watchlists: [] };
+            state.user = { id: "", username: "", email: "", watchlist: [] };
         },
+        updateUser : (state, action: PayloadAction<User>) => {
+            state.user = action.payload;
+        }
+
     },
     extraReducers: {
         [HYDRATE]: (state, action) => {
@@ -47,6 +51,6 @@ export const authSlice = createSlice({
     },
 });
 
-export const { login, logout } = authSlice.actions;
+export const { login, logout, updateUser } = authSlice.actions;
 
 export default authSlice.reducer;

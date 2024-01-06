@@ -43,11 +43,11 @@ const RegisterPage: React.FC = () => {
         return;
       }
       const res = await axiosInstance.post("/register", form);
-      let { token, user } = res.data; // Assuming your API returns a token and user on successful registration
+      let { token, user } = res.data;
       user = {
         username: user.username,
         email: user.email,
-        watchlists: user.watchlists,
+        watchlist: user.watchlist,
         id: user._id,
       };
       if (res.status === 201) {
