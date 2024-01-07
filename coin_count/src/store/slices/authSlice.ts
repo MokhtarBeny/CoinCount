@@ -5,7 +5,7 @@ export interface User {
     username: string,
     email: string,
     watchlist: any[]
-    id: string
+    id: string, 
 }
 
 export interface AuthState {

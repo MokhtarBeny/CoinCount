@@ -5,7 +5,7 @@ import { CryptoHistory, Cryptocurrency } from '../models/cryptos'
 // Get Crypto Data
 export const getCryptosList = async (req: Request, res: Response): Promise<void> => {
     try {
-        const cryptos = await Cryptocurrency.find(); // Retrieves all cryptocurrency entries
+        const cryptos = await Cryptocurrency.find({visibility: true}); // Retrieves all cryptocurrency entries
         res.status(200).json(cryptos);
     } catch (error) {
         res.status(500).json({ message: "Error retrieving cryptocurrency data", error: error });

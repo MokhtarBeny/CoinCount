@@ -27,7 +27,11 @@ const userSchema = new mongoose.Schema({
     lowercase: true,
     trim: true,
     match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
+  }, role: {
+    type: String,
+    enum: ['admin', 'user'],    
   },
+
   socialAccounts: [socialAccountSchema],
   watchlist: [ { type: mongoose.Schema.Types.ObjectId, ref: 'Cryptocurrency' } ],
 }, { timestamps: true });

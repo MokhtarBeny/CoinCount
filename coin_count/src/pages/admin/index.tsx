@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCryptoData, updateCryptoVisibility } from "../../store/thunks/cryptoThunk"; // Importing the thunk from the correct file
-import { selectCrypto } from "../../store/slices/cryptoSlice"; // Importing the selector from the slice
+import {
+	fetchCryptoAdminData,
+	updateCryptoVisibility,
+} from "../../store/thunks/cryptoThunk"; // Importing the thunk from the correct file
+import {
+	selectAdminCrypto,
+} from "../../store/slices/cryptoSlice"; // Importing the selector from the slice
 import { AppDispatch } from "@/store/store";
 import { useRouter } from "next/router";
-import axios from "axios";
 import axiosInstance from "@/utils/axios/axiosConfig";
 import {
+	Chip,
 	CircularProgress,
 	Pagination,
 	Table,
@@ -18,19 +23,19 @@ import {
 	Tooltip,
 } from "@nextui-org/react";
 
-import { EyeOutlined } from "@ant-design/icons";
+import { EyeInvisibleTwoTone, EyeTwoTone } from "@ant-design/icons";
+import checkAdminRole from "@/utils/auth/admin/checkAdmin";
+import { toast } from "react-toastify";
 
 function AdminDashboard() {
 	const dispatch: AppDispatch = useDispatch();
-	const { crypto, loading, error } = useSelector(selectCrypto);
-	const auth = useSelector((state: any) => state.auth);
+	const { crypto, loading, error } = useSelector(selectAdminCrypto);
 	const router = useRouter();
 	const [isAdmin, setIsAdmin] = useState(false); // State to track admin status
 
 	// Table
 	const [page, setPage] = React.useState(1);
 	const rowsPerPage = 12;
-	const [selectedColor, setSelectedColor] = React.useState("default");
 	// Check if crypto is not null before accessing length
 	const pages = crypto ? Math.ceil(crypto.length / rowsPerPage) : 0;
 
@@ -44,17 +49,35 @@ function AdminDashboard() {
 		return []; // Return an empty array if crypto is not an array
 	}, [page, crypto, rowsPerPage]);
 
-	const statusColorMap = {
-		active: "success",
-		paused: "danger",
+	// Change crypto visibility
+	const handleChangeVisibility = (cryptoId: string) => {
+		dispatch(updateCryptoVisibility(cryptoId)) .then(() => {
+               toast.success("Crypto visibility updated successfully!");
+           })
+           .catch((error) => {
+               toast.error("Failed to update crypto visibility: " + error.message);
+           });
 	};
 
-     // Change crypto visibility 
-     const handleChangeVisibility = (cryptoId: string) => {
-          dispatch(updateCryptoVisibility(cryptoId));
-      };
+	
 
-	// Table Pagination
+	// Admin
+	useEffect(() => {
+		const checkRole = async () => {
+			const isAdmin = await checkAdminRole(axiosInstance, router);
+			setIsAdmin(isAdmin);
+		};
+		checkRole();
+	}, [router]);
+
+	// Crypto Data
+	useEffect(() => {
+		dispatch(fetchCryptoAdminData());
+	}, [dispatch]);
+
+
+
+// Table Pagination
 	const bottomContent = React.useMemo(() => {
 		return (
 			<div className="flex w-full justify-center">
@@ -71,36 +94,8 @@ function AdminDashboard() {
 		);
 	}, [page, pages]);
 
-	// Admin
-	useEffect(() => {
-		const checkAdminRole = async () => {
-			try {
-				const response = await axiosInstance.get("/check-admin");
-				console.log(response);
-				if (!response.data.isAdmin) {
-					router.push("/unauthorized");
-					return; // Ensure no further execution after redirection
-				}
-				setIsAdmin(true); // Set admin status to true
-			} catch (error) {
-				if (axios.isAxiosError(error) && error.response?.status === 401) {
-					router.push("/login");
-					return;
-				} else {
-					console.error("Error:", error);
-					router.push("/error");
-					return;
-				}
-			}
-		};
 
-		checkAdminRole();
-	}, [router]);
 
-	// Crypto Data
-	useEffect(() => {
-		dispatch(fetchCryptoData());
-	}, [dispatch]);
 
 	if (loading)
 		return (
@@ -122,9 +117,15 @@ function AdminDashboard() {
 			</Table>
 		);
 
+
+
+
+
+
+
+          
 	return (
-		<div>
-			<p>Username : {auth.user.email}</p>
+		<div className="m-12">
 			<Table
 				aria-label="Crypto Data Table"
 				bottomContent={bottomContent}
@@ -145,95 +146,55 @@ function AdminDashboard() {
 					{/* Add more columns as needed */}
 				</TableHeader>
 				<TableBody>
-					{items.map(
-						(item: {
-							id: React.Key | null | undefined;
-							rank:
-								| string
-								| number
-								| boolean
-								| React.ReactElement<
-										any,
-										string | React.JSXElementConstructor<any>
-								  >
-								| Iterable<React.ReactNode>
-								| React.ReactPortal
-								| React.PromiseLikeOfReactNode
-								| null
-								| undefined;
-							name:
-								| string
-								| number
-								| boolean
-								| React.ReactElement<
-										any,
-										string | React.JSXElementConstructor<any>
-								  >
-								| Iterable<React.ReactNode>
-								| React.ReactPortal
-								| React.PromiseLikeOfReactNode
-								| null
-								| undefined;
-							symbol:
-								| string
-								| number
-								| boolean
-								| React.ReactElement<
-										any,
-										string | React.JSXElementConstructor<any>
-								  >
-								| Iterable<React.ReactNode>
-								| React.ReactPortal
-								| React.PromiseLikeOfReactNode
-								| null
-								| undefined;
-							priceUsd:
-								| string
-								| number
-								| boolean
-								| React.ReactElement<
-										any,
-										string | React.JSXElementConstructor<any>
-								  >
-								| Iterable<React.ReactNode>
-								| React.ReactPortal
-								| React.PromiseLikeOfReactNode
-								| null
-								| undefined;
-							marketCapUsd:
-								| string
-								| number
-								| boolean
-								| React.ReactElement<
-										any,
-										string | React.JSXElementConstructor<any>
-								  >
-								| Iterable<React.ReactNode>
-								| React.ReactPortal
-								| React.PromiseLikeOfReactNode
-								| null
-								| undefined;
-						}) => (
-							<TableRow key={item.id} className="cursor-pointer">
-								<TableCell>{item.rank}</TableCell>
-								<TableCell>{item.name}</TableCell>
-								<TableCell>{item.symbol}</TableCell>
-								<TableCell>{item.priceUsd}</TableCell>
-								<TableCell>{item.marketCapUsd}</TableCell>
-								<TableCell>Active</TableCell>
-								<TableCell>
+					{items.map((item) => (
+						<TableRow key={item.id} className="cursor-pointer">
+							<TableCell>{item.rank}</TableCell>
+							<TableCell>{item.name}</TableCell>
+							<TableCell>{item.symbol}</TableCell>
+							<TableCell>
+								{parseFloat(item.priceUsd).toFixed(2)} $
+							</TableCell>
+							<TableCell>
+								{parseFloat(item.marketCapUsd).toFixed(2)}${" "}
+							</TableCell>
+							<TableCell>
+								{" "}
+								<Chip
+									className={
+										item.visibility
+											? "bg-green-500/20 text-green-900 font-extrabold"
+											: "bg-red-500/20 text-red-900"
+									}
+								>
 									{" "}
-									<div className="relative flex items-center gap-2">
-										<Tooltip content="Visibilité de la crypto">
-											<span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-												<EyeOutlined onClick={() => handleChangeVisibility(item.id as string)} />
-											</span>
-										</Tooltip>
-									</div>
-								</TableCell>
-							</TableRow>
-						)
-					)}
+									{item.visibility ? "Visible" : "Hidden"}
+								</Chip>
+							</TableCell>
+							<TableCell>
+								<div className="relative flex items-center gap-2">
+									<Tooltip content="Visibilité de la crypto">
+										<span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+											{item.visibility ? (
+												<EyeTwoTone
+													twoToneColor="#52c41a"
+													onClick={() =>
+														handleChangeVisibility(item.id)
+													}
+												/>
+											) : (
+												<EyeInvisibleTwoTone
+													twoToneColor="#eb2f96"
+													onClick={() =>
+														handleChangeVisibility(item.id)
+													}
+												/>
+											)}
+										</span>
+									</Tooltip>
+								</div>
+							</TableCell>
+						</TableRow>
+					))}
 				</TableBody>
 			</Table>
 		</div>
