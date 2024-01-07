@@ -34,3 +34,14 @@ export async function fetchCryptos() {
 		throw error;
 	}
 }
+// A function to fetch a list of popular cryptocurrencies
+export async function fetchAdminCryptos() {
+	const axiosInstance = getAxiosInstance();
+	try {
+		const response = await axiosInstance.get("/admin-cryptos");
+		return response.data;
+	} catch (error) {
+		console.error("Error fetching  cryptos:", error);
+		throw error;
+	}
+}

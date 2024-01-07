@@ -12,6 +12,7 @@ export interface ICryptoData {
      changePercent24Hr: string;
      vwap24Hr?: string;
      explorer?: string;
+     visibility?: boolean;
 }
 
 // Interface for AssetHistory

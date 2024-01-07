@@ -96,6 +96,13 @@ export default function _Navbar() {
                 </Chip>
               </a>
             </Link>
+            {auth.user.role === 'admin' && (
+            <Link href="/admin">
+                <Button as={Link} color="primary" href="/admin" variant="flat">
+                    Admin
+                </Button>
+            </Link>
+        )}
           </>
         )}
 
