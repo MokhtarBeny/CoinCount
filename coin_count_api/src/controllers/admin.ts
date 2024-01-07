@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import User from "../models/users";
-import { Cryptocurrency } from "@/models/cryptos";
+import { Cryptocurrency } from "../models/cryptos";
 
 const JWT_SECRET = process.env.JWT_SECRET || "SECRET";
 
