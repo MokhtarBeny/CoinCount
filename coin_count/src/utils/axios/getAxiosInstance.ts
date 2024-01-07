@@ -1,8 +1,12 @@
 import axios from 'axios';
 
+const baseURL = process.env.NEXT_PUBLIC_BACKEND_URL
+
+
+
 const getAxiosInstance = () => {
     const axiosInstance = axios.create({
-        baseURL: "http://localhost:5036/api",
+        baseURL: `${baseURL}/api`,
         timeout: 10000,
         headers: {
             'Content-Type': 'application/json',

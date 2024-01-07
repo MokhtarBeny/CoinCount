@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm run init:env-prod && next build && npm run init:env-dev",
     "start": "next start",
-    "init:env" : "cp ./env-example/env.txt .env",
+    "init:env-prod" : "cp ./env-example/env-prod.txt .env",
+    "init:env-dev" : "cp ./env-example/env-dev.txt .env",
     "lint": "next lint"
   },
   "dependencies": {
