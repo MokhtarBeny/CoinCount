@@ -1,0 +1,41 @@
+name: Deploy coin_count_api to AWS EC2
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'coin_count_api/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Compress the coin_count_api code
+      run: tar -czf coin_count_api.tgz -C coin_count_api .
+
+    - name: Set up SSH connection
+      uses: webfactory/ssh-agent@v0.5.2
+      with:
+        ssh-private-key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+
+    - name: Transfer code to AWS EC2
+      run: scp -o StrictHostKeyChecking=no coin_count_api.tgz ec2-user@YOUR_EC2_IP_ADDRESS:~/ 
+
+    - name: Deploy on EC2
+      run: |
+        ssh -o StrictHostKeyChecking=no ec2-user@YOUR_EC2_IP_ADDRESS << 'ENDSSH'
+        rm -rf ~/coin_count_api_old
+        mv ~/coin_count_api ~/coin_count_api_old
+        mkdir ~/coin_count_api
+        tar -xzf ~/coin_count_api.tgz -C ~/coin_count_api
+        cd ~/coin_count_api
+        npm install
+        npm run init:env
+        npm run build
+        npm run start
+        ENDSSH

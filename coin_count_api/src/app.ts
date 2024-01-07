@@ -11,6 +11,8 @@ app.use(express.urlencoded({ extended: true })); // For parsing application/x-ww
 app.use(cors());
 
 
+
+
 fs.readdirSync("./src/routes").forEach((file) => {
     const isItDev = process.env.NODE_ENV === "development";
     const route = isItDev ? `./src/routes/${file}` : `./routes/${file.split(".")[0]}`
