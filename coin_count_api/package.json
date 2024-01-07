@@ -7,6 +7,7 @@
     "test": "jest --coverage --silent",
     "dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register ./src/index.ts",
     "start": "node ./dist/index.js",
+    "init:env" : "cp ./env-example/env.txt .env",
     "build": "tsc"
   },
   "dependencies": {
