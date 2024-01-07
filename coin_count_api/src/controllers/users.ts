@@ -210,7 +210,7 @@ export const addToWatchlist = async (req: Request, res: Response): Promise<Respo
     let decoded;
     try {
         decoded = verifyJwt(token);
-    } catch (error) {
+    } catch (error: any) {
         return res.status(401).json({ message: 'Invalid token', error: error.message });
     }
 
@@ -227,15 +227,17 @@ export const addToWatchlist = async (req: Request, res: Response): Promise<Respo
         if (!mongoose.Types.ObjectId.isValid(cryptoId)) {
             return res.status(400).json({ message: 'Invalid cryptocurrency ID' });
         }
-        if (!user.watchlist.includes(cryptoId)) {
-            user.watchlist.push(cryptoId);
+        const cryptoObjectId = new mongoose.Types.ObjectId(cryptoId);
+
+        if (!user.watchlist.includes(cryptoObjectId)) {
+            user.watchlist.push(cryptoObjectId);
             await user.save();
 
         }
         user.password = undefined;
         return res.json({ message: 'Crypto added to watchlist successfully', user });
     }
-    catch (error) {
+    catch (error: any ) {
         console.log(error); 
         return res.status(500).json({ message: 'Server error', error: error.message });
     }
@@ -249,7 +251,7 @@ export const removeFromWatchlist = async (req: Request, res: Response): Promise<
     let decoded;
     try {
         decoded = verifyJwt(token);
-    } catch (error) {
+    } catch (error: any ) {
         return res.status(401).json({ message: 'Invalid token', error: error.message });
     }
     if (!decoded) {
@@ -269,7 +271,7 @@ export const removeFromWatchlist = async (req: Request, res: Response): Promise<
         user.password = undefined; // Hide password
         return res.json({ message: 'Crypto removed from watchlist successfully', user });
     }
-    catch (error) {
+    catch (error: any ) {
         console.log(error); 
         return res.status(500).json({ message: 'Server error', error: error.message });
     }

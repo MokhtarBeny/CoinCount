@@ -4,6 +4,16 @@ const router = express.Router();
 import { parseString } from 'xml2js';
 
 
+interface RssItem {
+    title: string[];
+    description: string[];
+    pubDate: string[];
+    link: string[];
+    "media:content": Array<{ $: { url: string } }>;
+    "dc:creator": string[];
+
+}
+
 const ENDPOINT: string = "articles";
 const controller = require(`../controllers/${ENDPOINT}`);
 
@@ -18,7 +28,7 @@ router.get(`/${ENDPOINT}/`,
         const response = await axios.get("https://www.coindesk.com/arc/outboundfeeds/rss/");
         const xmlData = response.data;
 
-        parseString(xmlData, (err, result) => {
+        parseString(xmlData, (err: any, result: any) => {
             // if (err) {
             //     console.error(err);
             //     res.status(500).send({ error: "Error parsing XML" });
@@ -33,7 +43,7 @@ router.get(`/${ENDPOINT}/`,
                 console.error(err);
                 res.status(500).send({ error: "Error parsing XML" });
             } else {
-                const articles = result.rss.channel[0].item.map((item: { title: any[]; description: any[]; pubDate: any[]; author: any[]; img: any[]; link: any[]; }) => (
+                const articles = result.rss.channel[0].item.map((item: RssItem) => (
 
                     {
                         title: item.title[0],
