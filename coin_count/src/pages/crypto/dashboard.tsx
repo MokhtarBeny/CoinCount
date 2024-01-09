@@ -150,6 +150,8 @@ const DashboardPage: React.FC = () => {
                     </p>
                   </td>
                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <Link href={`/crypto/${coin.id}`}
+                      className="btn btn-primary px-3">
                     <div className="flex items-center">
                       <div className="ml-3">
                         <p className="text-gray-900 whitespace-no-wrap font-bold">
@@ -159,6 +161,7 @@ const DashboardPage: React.FC = () => {
                         </p>
                       </div>
                     </div>
+                    </Link>
                   </td>
                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                     <p className="text-gray-900 whitespace-no-wrap">

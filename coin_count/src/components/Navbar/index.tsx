@@ -51,17 +51,12 @@ export default function _Navbar() {
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4 " justify="center">
         <NavbarItem>
-          <Link color="foreground" href="#">
+          <Link  color="foreground" href="/crypto/dashboard">
             My DashBoard
           </Link>
-        </NavbarItem>
-        <NavbarItem isActive>
-          <Link href="#" aria-current="page">
-            Cryptomonnaie
-          </Link>
-        </NavbarItem>
+        </NavbarItem>        
         <NavbarItem>
-          <Link color="foreground" href="#">
+          <Link color="foreground" href="/article">
             Articles
           </Link>
         </NavbarItem>

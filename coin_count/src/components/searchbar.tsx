@@ -1,6 +1,7 @@
 // components/SearchBar.tsx
 import React, { useEffect, useState } from "react";
 import axiosInstance from "@/utils/axios/axiosConfig";
+import Link from "next/link";
 
 const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -61,10 +62,14 @@ const SearchBar = () => {
         value={searchTerm}
         onChange={handleSearch}
       />
-      <div className="absolute mt-1 rounded bg-white text-black w-full">
+      <div className="absolute mt-1 rounded bg-white text-black w-full">        
         {results.map((crypto) => (
-          <div key={crypto.id} className="p-2 hover:bg-gray-200">
-            {crypto.name} ({crypto.symbol})
+          
+          <div key={crypto.id} className="hover:bg-gray-200" >
+            <Link className="p-2" key={crypto.id}  href={`/crypto/${crypto.id}`}>
+
+              {crypto.name} ({crypto.symbol})
+            </Link>
           </div>
         ))}
       </div>
