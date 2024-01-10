@@ -56,8 +56,7 @@ const LoginPage: React.FC = () => {
       }
 
       await storage.saveToLocalStorage("t", token);
-      router.push("/")
-
+      router.push("/");
     } catch (err: any) {
       setError(err.response.data.message);
     }
