@@ -1,17 +1,14 @@
 import React from "react";
-import Navbar from "@/components/Navbar"
-const Layout = ({children})=>  {
+import Navbar from "@/components/Navbar";
+const Layout = ({ children }) => {
   return (
-    <div>
+    <div className="bg-white">
       <div>
-      <Navbar/>
+        <Navbar />
       </div>
-      <div>
-        {children}
-      </div>
+      <div>{children}</div>
     </div>
-  )
-}
+  );
+};
 
-
-export default Layout
+export default Layout;
