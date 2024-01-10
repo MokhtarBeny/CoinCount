@@ -42,19 +42,28 @@ export default function _Navbar() {
       <NavbarBrand>
         <div className="flex items-center gap-2">
           <Link href="/">
-
-          <Image src="/assets/logo.png" width={40} height={40} alt="coin count logo" />
-          <p className="font-bold text-inherit"
-          >Coin Count</p>
+            <Image
+              src="/assets/logo.png"
+              width={40}
+              height={40}
+              alt="coin count logo"
+            />
+            <p className="font-bold text-inherit">Coin Count</p>
           </Link>
         </div>
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4 " justify="center">
         <NavbarItem>
-          <Link  color="foreground" href="/crypto/dashboard">
-            My DashBoard
+          <Link color="foreground" href="/">
+            Home
           </Link>
-        </NavbarItem>        
+        </NavbarItem>
+        <NavbarItem>
+          <Link color="foreground" href="/crypto/dashboard">
+            Cryptos
+          </Link>
+        </NavbarItem>
+
         <NavbarItem>
           <Link color="foreground" href="/article">
             Articles
@@ -91,13 +100,13 @@ export default function _Navbar() {
                 </Chip>
               </a>
             </Link>
-            {auth.user.role === 'admin' && (
-            <Link href="/admin">
+            {auth.user.role === "admin" && (
+              <Link href="/admin">
                 <Button as={Link} color="primary" href="/admin" variant="flat">
-                    Admin
+                  Admin
                 </Button>
-            </Link>
-        )}
+              </Link>
+            )}
           </>
         )}
 
