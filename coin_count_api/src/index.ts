@@ -11,7 +11,9 @@ import { cryptoDataFetch } from './services/crypto/initializeCryptoDataFetch';
 dotenv.config();
 const port = process.env.PORT || 3000;
 
+
 cryptoDataFetch();
+
 
 app.use((req, res, next) => {
   // Extract the IP address from the request
