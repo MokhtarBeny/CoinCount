@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, CardHeader, CardBody, Image } from "@nextui-org/react";
+import { Card, CardHeader, CardBody, Image, Chip } from "@nextui-org/react";
 import RssCard from "@/components/rss_feed/RssCard";
 import axiosInstance from "@/utils/axios/axiosConfig";
 import SmallCard from "@/components/SmallRssCard";
@@ -15,11 +15,35 @@ interface Categories {
 const Articles = () => {
   const [articles, setArticles] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [filteredArticles, setFilteredArticles] = useState([]);
+  const [allSelected, setAllSelected] = useState(false);
+
+  useEffect(() => {
+    if (allSelected) {
+      setSelectedCategories(categories);
+      setFilteredArticles(articles);
+      setAllSelected(false);
+    }
+    if (selectedCategories.length > 0) {
+      const newFilteredArticles = articles.filter((article) =>
+        article.categories.some((category) =>
+          selectedCategories.some((selectedCategory) =>
+            category.toLowerCase().includes(selectedCategory.toLowerCase())
+          )
+        )
+      );
+      setFilteredArticles(newFilteredArticles);
+    } else {
+      setFilteredArticles(articles);
+    }
+  }, [articles, selectedCategories]);
 
   const fetchRSSFeed = async () => {
     try {
       const response = await axiosInstance.get("articles");
       setArticles(response.data);
+      console.log(response.data);
     } catch (error) {
       console.error("Erreur lors de la récupération du flux RSS", error);
       throw error;
@@ -34,6 +58,7 @@ const Articles = () => {
           const categories: string[] = results.map((result: any) => result.id);
           const uniqueCategories = [...new Set(categories)];
           setCategories(uniqueCategories);
+          console.log(uniqueCategories);
         })
         .catch((error) => {
           console.error("Error fetching crypto data:", error);
@@ -43,7 +68,9 @@ const Articles = () => {
     }
   };
 
-  useEffect(() => {}, []);
+  const selectAllArticles = () => {
+    setFilteredArticles(articles);
+  };
 
   useEffect(() => {
     getAvailableCryptoCategories();
@@ -52,13 +79,76 @@ const Articles = () => {
 
   return (
     <div className="container mx-auto">
+      <div className="flex flex-row gap-4">
+        <div className="flex-1 flex nowrap overflow-scroll custom-scrollbar py-2">
+          {selectedCategories.length > 0 && (
+            <Chip
+              color="warning"
+              variant="solid"
+              className="mr-2 cursor-pointer"
+              onClose={() => {
+                setSelectedCategories([]);
+              }}
+              onClick={() => {
+                setSelectedCategories([]);
+              }}
+            >
+              No Filter
+            </Chip>
+          )}
+          {categories.length > 0 &&
+            categories.map((category: string, index: number) => {
+              if (selectedCategories.includes(category)) {
+                return (
+                  <Chip
+                    key={index}
+                    color="primary"
+                    variant="solid"
+                    className="mr-2 cursor-pointer"
+                    onClick={() => {
+                      setSelectedCategories(
+                        selectedCategories.filter(
+                          (selectedCategory: string) =>
+                            selectedCategory !== category
+                        )
+                      );
+                    }}
+                  >
+                    {category}
+                  </Chip>
+                );
+              }
+              return (
+                <Chip
+                  key={index}
+                  color="primary"
+                  variant="bordered"
+                  className="mr-2 cursor-pointer"
+                  onClick={() => {
+                    setSelectedCategories([...selectedCategories, category]);
+                  }}
+                >
+                  {category}
+                </Chip>
+              );
+            })}
+        </div>
+      </div>
+
       <div className=" p-5">
-        <p className="text-2xl uppercase font-bold mb-3 text-black">
-          Tendances du moment
-        </p>
+        {filteredArticles.length == 0 ? (
+          <p className="uppercase font-bold mb-3 text-black">
+            No articles found...
+          </p>
+        ) : (
+          <p className="text-2xl uppercase font-bold mb-3 text-black">
+            Tendances du moment
+          </p>
+        )}
+
         <div className="bg-white-500 flex flex-row gap-4">
           <div className="bg-white-400 w-1/2 py-3  ">
-            {articles.length > 0 && (
+            {filteredArticles.length > 0 && (
               <>
                 <RssCard
                   key={articles[0].title}
@@ -73,7 +163,7 @@ const Articles = () => {
             )}
           </div>
           <div className="bg-white-400 w-1/2 py-3  ">
-            {articles.length > 0 && (
+            {filteredArticles.length > 0 && (
               <>
                 <RssCard
                   key={articles[1].title}
@@ -89,7 +179,7 @@ const Articles = () => {
           </div>
         </div>
         <div className="bg-white-400">
-          <ArticlesList articles={articles.slice(2)} />
+          <ArticlesList articles={filteredArticles} />
         </div>
       </div>
     </div>
