@@ -3,8 +3,7 @@ import axios from 'axios';
 
 // get data base usrl from env file
 
-const baseURL = process.env.NEXT_PUBLIC_BACKEND_URL 
-
+const baseURL = process.env.NEXT_PUBLIC_BACKEND_URL  ||'http://localhost:5036'
 
 const axiosInstance = axios.create({
     baseURL: `${baseURL}/api`,
