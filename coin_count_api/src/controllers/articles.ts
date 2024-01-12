@@ -16,7 +16,9 @@ interface RssItem {
 
 
 export const getArticles = async (req: Request, res: Response) => {
-    const response = await axios.get("https://www.coindesk.com/arc/outboundfeeds/rss/");
+    // const response = await axios.get("https://www.coindesk.com/arc/outboundfeeds/rss/");
+    const response = await axios.get("https://www.coindesk.com/feed");
+
     const xmlData = response.data;
     parseString(xmlData, (err: any, result: any) => {
         if (err) {
@@ -29,11 +31,12 @@ export const getArticles = async (req: Request, res: Response) => {
                     description: item.description[0],
                     date: item.pubDate[0],
                     link: item.link[0],
-                    image: item['media:content'][0]['$']['url'],
+                    image: item["media:content"] ? item["media:content"][0].$.url : null,
                     author: item["dc:creator"][0],
                     categories: item.category.map((category: any) => category._)
                 }));
             res.send(articles);
+
         }
     });
 
