@@ -56,9 +56,7 @@ const Articles = () => {
         .then((response) => {
           const results = response.data;
           const categories: string[] = results.map((result: any) => result.id);
-          const uniqueCategories = [...new Set(categories)];
-          setCategories(uniqueCategories);
-          console.log(uniqueCategories);
+          setCategories(categories);
         })
         .catch((error) => {
           console.error("Error fetching crypto data:", error);
