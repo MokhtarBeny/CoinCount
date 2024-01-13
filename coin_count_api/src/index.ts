@@ -30,7 +30,7 @@ app.listen(port, async () => {
   const networkIp = osf.getNetworkIp();
   console.clear();
   await database();
-  logger.info(`Server is running on port ${port}`);
+  logger.info(`Server running on port ${port}`);
   logger.info(`Local: http://localhost:${port}`);
   logger.info(`Network: http://${networkIp}:${port}`);
 });
