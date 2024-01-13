@@ -1,4 +1,5 @@
 GITHUB_ID= cfc67ca59c4414e68ec3
 GITHUB_SECRET = 1e6f5ba07600b36c6f299cbeb3be53abed3bba35
 
-BACKEND_URL = http://localhost:5036
+NEXT_PUBLIC_BACKEND_URL = http://localhost:5036
+NEXTAUTH_SECRET = coin_count_secret

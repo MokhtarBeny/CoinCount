@@ -8,24 +8,74 @@ import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
   import Link from "next/link";
 
+
 const DashboardPage: React.FC = () => {
   const [coins, setCoins] = useState([]);
   const { token } = useSelector((state: any) => state.auth);
-  const dispatch = useDispatch();
   const [watchlist, setWatchlist] = useState<any[]>([]);
   const [canReqFav, setCanReqFav] = useState(true);
 
+  const formatPrice = (price) => {
+    const numPrice = parseFloat(price);
+    if (numPrice < 0.01) {
+      return numPrice.toPrecision(2); 
+    }
+    return numPrice.toFixed(2); 
+  };
 
-  const generateTrendData = (changePercent: number, length = 5) => {
+  const [sortField, setSortField] = useState<string | null>("rank");
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+
+  const handleSort = (field: string) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortField(field);
+      setSortDirection('asc');
+    }
+  };
+
+  const sortedCoins = React.useMemo(() => {
+    if (!sortField) return coins;
+    return [...coins].sort((a, b) => {
+      if (sortField === 'rank' || sortField === 'priceUsd') {
+        const valueA = sortField === 'rank' ? a.rank : parseFloat(a.priceUsd);
+        const valueB = sortField === 'rank' ? b.rank : parseFloat(b.priceUsd);
+        return sortDirection === 'asc' ? valueA - valueB : valueB - valueA;
+      }
+      return 0;
+    });
+  }, [coins, sortField, sortDirection]);
+
+  const hashStringToSeed = (str) => {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      const char = str.charCodeAt(i);
+      hash = (hash << 5) - hash + char;
+      hash = hash & hash; 
+    }
+    return hash;
+  };
+  
+  const seededRandom = (seed) => {
+    const m = 0x80000000;
+    seed = (seed * 9301 + 49297) % 233280;
+    return seed / m;
+  };
+  
+  const generateTrendData = (changePercent, length = 5, name) => {
+    let seed = hashStringToSeed(name);
     let trendData = [50];
     for (let i = 1; i < length; i++) {
+      const rand = seededRandom(seed);
       trendData.push(
-        trendData[i - 1] + (changePercent > 0 ? 1 : -1) * Math.random() * 10
+        trendData[i - 1] + (changePercent > 0 ? 1 : -1) * rand * 10
       );
+      seed = trendData[i];
     }
     return trendData;
   };
-
+  
   const addToWatchList = async (coin: any) => {
     if(token  === "" || token === null) {
       if(!canReqFav) return;
@@ -83,7 +133,7 @@ const DashboardPage: React.FC = () => {
     const className = change < 0 ? "text-red-500" : "text-green-500";
     return <span className={className}>{change.toFixed(2)}%</span>;
   };
-
+console.log(watchlist)
   useEffect(() => {
     const fetchWatchlist = async () => {
       try {
@@ -111,16 +161,33 @@ const DashboardPage: React.FC = () => {
           <table className="min-w-full leading-normal">
             <thead>
               <tr>
-                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer"
+                onClick={() => handleSort('rank')}
+                >
                   Rank
+                  {
+                    sortField === 'rank' && (
+                      sortDirection === 'asc' ? '↑' : '↓'
+                    )
+                  }
                 </th>
-                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                >
                   Coin
                 </th>
-                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer "
+                onClick={() => handleSort('priceUsd')}
+
+                >
                   Price
+                  {
+                    sortField === 'priceUsd' && (
+                      sortDirection === 'asc' ? '↑' : '↓'
+                    )
+                  }
                 </th>
-                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                >
                   24h
                 </th>
                 <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -142,7 +209,7 @@ const DashboardPage: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {coins.map((coin, index) => (
+              {sortedCoins.map((coin, index) => (
                 <tr key={index}>
                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                     <p className="text-gray-900 whitespace-no-wrap">
@@ -165,8 +232,7 @@ const DashboardPage: React.FC = () => {
                   </td>
                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                     <p className="text-gray-900 whitespace-no-wrap">
-                      ${parseFloat(coin.priceUsd).toFixed(2)}{" "}
-                      {/* Prix avec deux décimales */}
+                    ${formatPrice(coin.priceUsd)}
                     </p>
                   </td>
                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -185,12 +251,12 @@ const DashboardPage: React.FC = () => {
                     </p>
                   </td>
                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    <Sparklines data={generateTrendData(coin.changePercent24Hr)} height={20} width={100}>
+                    <Sparklines data={generateTrendData(coin.changePercent24Hr, 5, coin.symbol)} height={20} width={100}>
                       <SparklinesLine color={coin.changePercent24Hr >= 0 ? "green" : "red"} />
                     </Sparklines>
                   </td>
                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-large">
-                    {watchlist.find((c) => c === coin._id) ? (
+                    {watchlist.find((c) => c._id === coin._id) ? (
                       <button
                         className="btn btn-primary px-3 "
                         onClick={() => removeFromWatchlist(coin)}

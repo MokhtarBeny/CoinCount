@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm run init:env-prod && next build && npm run init:env-dev",
+    "build": "npm run init:env-prod && next build",
     "start": "next start",
     "init:env-prod" : "cp ./env-example/env-prod.txt .env",
     "init:env-dev" : "cp ./env-example/env-dev.txt .env",

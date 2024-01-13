@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import { fetchCryptoAdminData } from "../../store/thunks/cryptoThunk";
 import { selectAdminCrypto } from "../../store/slices/cryptoSlice";
+
 import { AppDispatch } from "@/store/store";
 import { useRouter } from "next/router";
 
@@ -52,6 +54,7 @@ function AdminDashboard() {
 	}, [page, crypto, rowsPerPage]);
 
 	// Change crypto visibility
+
 	const handleChangeVisibility = (cryptoId: string, index) => {
 		console.log(index, items, "ITEM", items[index].visibility);
 		// Create a new array with the updated visibility
@@ -101,6 +104,7 @@ function AdminDashboard() {
 			});
 		}
 	}, [updateCryptoVisibility.data, updateCryptoVisibility.error]);
+
 	// Admin
 	useEffect(() => {
 		const checkRole = async () => {

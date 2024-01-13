@@ -6,6 +6,7 @@ import { Avatar, Image, Spacer } from "@nextui-org/react";
 import getAxiosInstance from "@/utils/axios/getAxiosInstance";
 import { login, logout } from "@/store/slices/authSlice";
 import { toast } from "react-toastify";
+import  { WatchListTable } from "./components/WatchlistTable";
 
 const ProfilePage: React.FC = () => {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ const ProfilePage: React.FC = () => {
     confirmPassword: "",
     watchlist: [],
   });
+  const [watchlist, setWatchlist] = useState([]);
   const [isEditable, setIsEditable] = useState({
     user: false,
     password: false,
@@ -37,6 +39,8 @@ const ProfilePage: React.FC = () => {
       // router.push("/login");
     }
   }, [auth, router]);
+
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -85,7 +89,6 @@ const ProfilePage: React.FC = () => {
       toast.error("An error occured, please try again")
     }
   };
-
   const saveUser = async () => {
     try {
       const res = await axiosInstance.put("/auth/change-username", {
@@ -117,8 +120,9 @@ const ProfilePage: React.FC = () => {
       router.push("/login");
     }
   }
-  , [router.route])
+  , [auth.user, router, router.route])
 
+  console.log(watchlist)
 
   return (
     <div className="container mx-auto p-6">
@@ -280,7 +284,9 @@ const ProfilePage: React.FC = () => {
         </div>
 
         <div className="border-t border-gray-200 pt-4 mt-4">
-          <h4 className="text-lg font-semibold mb-4">My Watchlist</h4>
+          
+          <WatchListTable/>
+
         </div>
       </div>
     </div>

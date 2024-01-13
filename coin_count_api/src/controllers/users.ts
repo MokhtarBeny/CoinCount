@@ -219,7 +219,7 @@ export const addToWatchlist = async (req: Request, res: Response): Promise<Respo
     }
 
     try {
-        const user = await User.findById(decoded.userId);
+        const user = await User.findById(decoded.userId).populate('watchlist');
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -258,7 +258,7 @@ export const removeFromWatchlist = async (req: Request, res: Response): Promise<
         return res.status(401).json({ message: 'Invalid token' });
     }
     try {
-        const user = await User.findById(decoded.userId);
+        const user = (await User.findById(decoded.userId));
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -268,8 +268,10 @@ export const removeFromWatchlist = async (req: Request, res: Response): Promise<
         }
         user.watchlist = user.watchlist.filter(crypto => crypto.toString() !== cryptoId);
         await user.save();
-        user.password = undefined; // Hide password
-        return res.json({ message: 'Crypto removed from watchlist successfully', user });
+           // Re-fetch the user and populate the watchlist to reflect the updated state
+           const updatedUser = await User.findById(decoded.userId).populate('watchlist');
+           updatedUser.password = undefined; // Hide password
+        return res.json({ message: 'Crypto removed from watchlist successfully', user: updatedUser });
     }
     catch (error: any ) {
         console.log(error); 
@@ -289,7 +291,7 @@ export const getWatchlist = async (req: Request, res: Response): Promise<Respons
         return res.status(401).json({ message: 'Invalid token' });
     }
     try {
-        const user = await User.findById(decoded.userId).populate('watchlist.cryptos');
+        const user = await User.findById(decoded.userId).populate('watchlist');
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
