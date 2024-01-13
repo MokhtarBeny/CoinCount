@@ -11,7 +11,6 @@ import { useDispatch, useSelector } from "react-redux";
 const DashboardPage: React.FC = () => {
   const [coins, setCoins] = useState([]);
   const { token } = useSelector((state: any) => state.auth);
-  const dispatch = useDispatch();
   const [watchlist, setWatchlist] = useState<any[]>([]);
   const [canReqFav, setCanReqFav] = useState(true);
 

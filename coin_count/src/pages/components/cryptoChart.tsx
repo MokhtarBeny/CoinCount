@@ -65,7 +65,7 @@ export default function CryptoChart({ cryptoHistoryData }: ICryptoChartProps) {
                }
                return timeDiff < 1;
           }).map(item => {
-               let format;
+               let format: string;
                switch (filter) {
                     case '1d':
                          // For 1 day, show hour

@@ -4,9 +4,7 @@ import {
 	fetchCryptoAdminData,
 	updateCryptoVisibility,
 } from "../../store/thunks/cryptoThunk"; // Importing the thunk from the correct file
-import {
-	selectAdminCrypto,
-} from "../../store/slices/cryptoSlice"; // Importing the selector from the slice
+import { selectAdminCrypto } from "../../store/slices/cryptoSlice"; // Importing the selector from the slice
 import { AppDispatch } from "@/store/store";
 import { useRouter } from "next/router";
 import axiosInstance from "@/utils/axios/axiosConfig";
@@ -51,15 +49,14 @@ function AdminDashboard() {
 
 	// Change crypto visibility
 	const handleChangeVisibility = (cryptoId: string) => {
-		dispatch(updateCryptoVisibility(cryptoId)) .then(() => {
-               toast.success("Crypto visibility updated successfully!");
-           })
-           .catch((error) => {
-               toast.error("Failed to update crypto visibility: " + error.message);
-           });
+		dispatch(updateCryptoVisibility(cryptoId))
+			.then(() => {
+				toast.success("Crypto visibility updated successfully!");
+			})
+			.catch((error) => {
+				toast.error("Failed to update crypto visibility: " + error.message);
+			});
 	};
-
-	
 
 	// Admin
 	useEffect(() => {
@@ -75,9 +72,7 @@ function AdminDashboard() {
 		dispatch(fetchCryptoAdminData());
 	}, [dispatch]);
 
-
-
-// Table Pagination
+	// Table Pagination
 	const bottomContent = React.useMemo(() => {
 		return (
 			<div className="flex w-full justify-center">
@@ -93,9 +88,6 @@ function AdminDashboard() {
 			</div>
 		);
 	}, [page, pages]);
-
-
-
 
 	if (loading)
 		return (
@@ -117,13 +109,6 @@ function AdminDashboard() {
 			</Table>
 		);
 
-
-
-
-
-
-
-          
 	return (
 		<div className="m-12">
 			<Table
