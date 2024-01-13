@@ -219,7 +219,7 @@ export const addToWatchlist = async (req: Request, res: Response): Promise<Respo
     }
 
     try {
-        const user = await User.findById(decoded.userId);
+        const user = await User.findById(decoded.userId).populate('watchlist');
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }

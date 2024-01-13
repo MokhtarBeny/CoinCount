@@ -98,7 +98,7 @@ export const WatchListTable: React.FC = () => {
 		return <span className={className}>{change.toFixed(2)}%</span>;
 	};
 
-	const handleRemoveFromWatchlist = async (coin) => {
+	const handleRemoveFromWatchlist = async (coin: { _id: string; }) => {
 		setIsLoading(true);
 		try {
 			const updatedWatchlist = await removeFromWatchlist(coin);

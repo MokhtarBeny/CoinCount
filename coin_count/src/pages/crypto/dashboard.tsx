@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
   import Link from "next/link";
 
+
 const DashboardPage: React.FC = () => {
   const [coins, setCoins] = useState([]);
   const { token } = useSelector((state: any) => state.auth);
@@ -75,7 +76,6 @@ const DashboardPage: React.FC = () => {
     return trendData;
   };
   
-
   const addToWatchList = async (coin: any) => {
     if(token  === "" || token === null) {
       if(!canReqFav) return;
@@ -133,7 +133,7 @@ const DashboardPage: React.FC = () => {
     const className = change < 0 ? "text-red-500" : "text-green-500";
     return <span className={className}>{change.toFixed(2)}%</span>;
   };
-
+console.log(watchlist)
   useEffect(() => {
     const fetchWatchlist = async () => {
       try {
@@ -256,7 +256,7 @@ const DashboardPage: React.FC = () => {
                     </Sparklines>
                   </td>
                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-large">
-                    {watchlist.find((c) => c === coin._id) ? (
+                    {watchlist.find((c) => c._id === coin._id) ? (
                       <button
                         className="btn btn-primary px-3 "
                         onClick={() => removeFromWatchlist(coin)}
