@@ -37,4 +37,5 @@ jobs:
         npm install
         npm run init:env
         npm run build
+        npm run start
         ENDSSH
