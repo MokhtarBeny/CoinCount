@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-	fetchCryptoAdminData,
-} from "../../store/thunks/cryptoThunk"; 
-import { selectAdminCrypto } from "../../store/slices/cryptoSlice"; 
+import { fetchCryptoAdminData } from "../../store/thunks/cryptoThunk";
+import { selectAdminCrypto } from "../../store/slices/cryptoSlice";
 import { AppDispatch } from "@/store/store";
 import { useRouter } from "next/router";
 
@@ -22,9 +20,8 @@ import {
 
 import { EyeInvisibleTwoTone, EyeTwoTone } from "@ant-design/icons";
 import checkAdminRole from "@/utils/auth/admin/checkAdmin";
-import { toast } from "react-toastify";
+import { Bounce, toast } from "react-toastify";
 import useUpdateCryptoVisibility from "@/service/useUpdateCryptos.service";
-import { log } from "console";
 import axiosInstance from "@/utils/axios/axiosConfig";
 
 function AdminDashboard() {
@@ -56,7 +53,6 @@ function AdminDashboard() {
 
 	// Change crypto visibility
 	const handleChangeVisibility = (cryptoId: string, index) => {
-
 		console.log(index, items, "ITEM", items[index].visibility);
 		// Create a new array with the updated visibility
 		const updatedCryptos = cryptos.map((item, idx) => {
@@ -69,8 +65,6 @@ function AdminDashboard() {
 		// items[index].visibility = !items[index].visibility
 		updateCryptoVisibility.fetchData(cryptoId);
 		setCryptos(updatedCryptos); // Update the state with the new array
-
-
 	};
 
 	useEffect(() => {
@@ -80,18 +74,40 @@ function AdminDashboard() {
 	useEffect(() => {
 		if (updateCryptoVisibility.data) {
 			console.log(updateCryptoVisibility.data);
+			toast.success("Visibility successfully modified", {
+				position: "top-right",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: "light",
+				transition: Bounce,
+			});
 		}
 		if (updateCryptoVisibility.error) {
 			console.log(updateCryptoVisibility.error);
+			toast.error("An error has occurred", {
+				position: "top-right",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: "light",
+				transition: Bounce,
+			});
 		}
 	}, [updateCryptoVisibility.data, updateCryptoVisibility.error]);
 	// Admin
 	useEffect(() => {
-	  const checkRole = async () => {
-	       const isAdmin = await checkAdminRole(axiosInstance, router);
-	       setIsAdmin(isAdmin);
-	  };
-	  checkRole();
+		const checkRole = async () => {
+			const isAdmin = await checkAdminRole(axiosInstance, router);
+			setIsAdmin(isAdmin);
+		};
+		checkRole();
 	}, [router]);
 
 	// Crypto Data
@@ -184,38 +200,39 @@ function AdminDashboard() {
 							</TableCell>
 							<TableCell>
 								<div className="relative flex items-center gap-2">
-									<Tooltip content="Visibilité de la crypto">
-										<span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-											{item.visibility ? (
-												<>
-													{updateCryptoVisibility.isLoading && (
-														<CircularProgress size="sm" label="Loading..." />
-													)}
-													<EyeTwoTone
-														twoToneColor="#52c41a"
-														onClick={(e) =>
-															handleChangeVisibility(
-																item.id,
-														
-																index
-															)
-														}
+									<span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+										{item.visibility ? (
+											<>
+												{updateCryptoVisibility.isLoading && (
+													<CircularProgress
+														size="sm"
+														label="Loading..."
 													/>
-												</>
-											) : (
-												<EyeInvisibleTwoTone
-													twoToneColor="#eb2f96"
+												)}
+												<EyeTwoTone
+													twoToneColor="#52c41a"
 													onClick={(e) =>
 														handleChangeVisibility(
 															item.id,
-														
+
 															index
 														)
 													}
 												/>
-											)}
-										</span>
-									</Tooltip>
+											</>
+										) : (
+											<EyeInvisibleTwoTone
+												twoToneColor="#eb2f96"
+												onClick={(e) =>
+													handleChangeVisibility(
+														item.id,
+
+														index
+													)
+												}
+											/>
+										)}
+									</span>
 								</div>
 							</TableCell>
 						</TableRow>
