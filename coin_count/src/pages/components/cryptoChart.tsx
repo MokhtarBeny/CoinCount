@@ -49,6 +49,7 @@ export default function CryptoChart({ cryptoHistoryData }: ICryptoChartProps) {
   const [filteredData, setFilteredData] =
     useState<ChartData<"line">>(initialChartData);
 
+
   const processData = (data: any[], filter: string) => {
     const now = moment();
     return data
@@ -90,6 +91,7 @@ export default function CryptoChart({ cryptoHistoryData }: ICryptoChartProps) {
         };
       });
   };
+
 
   const options = {
     responsive: true,
