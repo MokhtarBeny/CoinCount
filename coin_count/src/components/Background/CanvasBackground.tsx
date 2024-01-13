@@ -61,8 +61,9 @@ const CanvasGradientAnimation = () => {
       }
     };
 
-    const render = (time) => {
+    const render = (time = 1) => {
       drawRotatingGradient(time * 1);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       animationFrameId = requestAnimationFrame(render);
     };
 

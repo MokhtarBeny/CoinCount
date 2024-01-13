@@ -30,18 +30,35 @@ export default function Home() {
   const [cryptos, setCryptos] = useState([]);
   const [articles, setArticles] = useState<Article[]>([]);
 
-  const fetchRSSFeed = async () => {
-    try {
-      const response = await axiosInstance.get("articles");
-      setArticles(response.data.slice(0, 2));
-      console.log("Articles", articles);
-    } catch (error) {
-      console.error("Erreur lors de la récupération du flux RSS", error);
-      throw error;
-    }
-  };
 
   useEffect(() => {
+    function calculateHotScore(crypto) {
+      const changeWeight = 0.4;
+      const volumeWeight = 0.3;
+      const marketCapWeight = 0.3;
+
+      const normalizedChange = parseFloat(crypto.changePercent24Hr) / 100;
+      const normalizedVolume = Math.log10(parseFloat(crypto.volumeUsd24Hr));
+      const normalizedMarketCap = Math.log10(parseFloat(crypto.marketCapUsd));
+
+      return (
+        normalizedChange * changeWeight +
+        normalizedVolume * volumeWeight +
+        normalizedMarketCap * marketCapWeight
+      );
+    }
+
+    const fetchRSSFeed = async () => {
+      try {
+        const response = await axiosInstance.get("articles");
+        setArticles(response.data.slice(0, 2));
+        console.log("Articles", articles);
+      } catch (error) {
+        console.error("Erreur lors de la récupération du flux RSS", error);
+        throw error;
+      }
+    };
+
     fetchRSSFeed();
     axiosInstance
       .get("/cryptos")
@@ -62,22 +79,7 @@ export default function Home() {
       .catch((error) => {
         console.error("Error fetching crypto data:", error);
       });
-  }, []);
-  function calculateHotScore(crypto) {
-    const changeWeight = 0.4;
-    const volumeWeight = 0.3;
-    const marketCapWeight = 0.3;
-
-    const normalizedChange = parseFloat(crypto.changePercent24Hr) / 100;
-    const normalizedVolume = Math.log10(parseFloat(crypto.volumeUsd24Hr));
-    const normalizedMarketCap = Math.log10(parseFloat(crypto.marketCapUsd));
-
-    return (
-      normalizedChange * changeWeight +
-      normalizedVolume * volumeWeight +
-      normalizedMarketCap * marketCapWeight
-    );
-  }
+  }, [articles, axiosInstance]);
   return (
     <>
       <CanvasGradientAnimation />

@@ -41,7 +41,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
       };
       refreshMyToken();
     }
-  }, []);
+  }, [dispatch]);
   return (
 
     <NextUIProvider> 

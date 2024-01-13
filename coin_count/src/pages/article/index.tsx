@@ -37,7 +37,7 @@ const Articles = () => {
     } else {
       setFilteredArticles(articles);
     }
-  }, [articles, selectedCategories]);
+  }, [allSelected, articles, categories, selectedCategories]);
 
   const fetchRSSFeed = async () => {
     try {

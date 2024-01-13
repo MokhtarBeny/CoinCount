@@ -117,7 +117,7 @@ const ProfilePage: React.FC = () => {
       router.push("/login");
     }
   }
-  , [router.route])
+  , [auth.user, router, router.route])
 
 
   return (
