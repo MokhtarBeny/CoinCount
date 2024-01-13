@@ -33,7 +33,7 @@ jobs:
         mv ~/coin_count_api ~/coin_count_api_old
         mkdir ~/coin_count_api
         tar -xzf ~/coin_count_api.tgz -C ~/coin_count_api
-        cd ~/coin_count_api
+        cd coin_count_api
         npm install
         npm run init:env
         npm run build
