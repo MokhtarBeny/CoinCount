@@ -13,6 +13,7 @@ export interface ICryptoData {
   vwap24Hr?: string;
   explorer?: string;
   visibility?: boolean;
+  icon?: string;
 }
 
 // Interface for AssetHistory
