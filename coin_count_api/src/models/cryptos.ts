@@ -54,6 +54,11 @@ const cryptocurrencySchema = new mongoose.Schema<ICryptoData>({
     visibility: {
         type: Boolean,
         require: false
+    },
+    icon: {
+        type: String,
+        require: false,
+        default: 'https://cdn-icons-png.flaticon.com/512/1213/1213709.png'
     }
 });
 
