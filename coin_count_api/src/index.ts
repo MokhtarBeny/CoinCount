@@ -12,7 +12,7 @@ dotenv.config();
 const port = process.env.PORT || 3000;
 
 
-cryptoDataFetch();
+// cryptoDataFetch();
 
 
 app.use((req, res, next) => {
