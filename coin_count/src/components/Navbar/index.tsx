@@ -60,7 +60,7 @@ export default function _Navbar() {
         </NavbarItem>
         <NavbarItem>
           <Link color="foreground" href="/crypto/dashboard">
-            Cryptos
+            Coin
           </Link>
         </NavbarItem>
 

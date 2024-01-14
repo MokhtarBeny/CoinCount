@@ -151,7 +151,7 @@ console.log(watchlist)
       <div className="py-8">
         <div>
           <h2 className="text-2xl font-semibold leading-tight">
-            Tableau de bord des cryptomonnaies
+            Cryptocurrency dashboard
           </h2>
         </div>
         <div className="my-2 flex sm:flex-row flex-col">
@@ -191,7 +191,7 @@ console.log(watchlist)
                   24h
                 </th>
                 <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Volume sur 24h en $
+                  24-hour volume in $
                 </th>
                 <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                   Market Cap
@@ -212,8 +212,8 @@ console.log(watchlist)
               {sortedCoins.map((coin, index) => (
                 <tr key={index}>
                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    <p className="text-gray-900 whitespace-no-wrap">
-                      {coin.rank}
+                    <p className="text-gray-900 whitespace-no-wrap">                      
+                        {coin.rank} 
                     </p>
                   </td>
                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -221,7 +221,8 @@ console.log(watchlist)
                       className="btn btn-primary px-3">
                     <div className="flex items-center">
                       <div className="ml-3">
-                        <p className="text-gray-900 whitespace-no-wrap font-bold">
+                        <p className="flex text-gray-900 whitespace-no-wrap font-bold">
+                          <img src={coin.icon} alt={coin.name} className="w-6 h-6 mr-2" />                          
                           {" "}
                           {/* Nom de la cryptomonnaie en gras */}
                           {coin.name} {coin.symbol}
