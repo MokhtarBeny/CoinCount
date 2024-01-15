@@ -24,6 +24,9 @@ class CryptoApiCalls {
 	public async fetchCryptoData(): Promise<ICryptoData[]> {
 		try {
 			const response = await this.axiosCoinCapInstance.get("/assets");
+			response.data.data.forEach((crypto: ICryptoData) => {
+				crypto.icon = `https://cryptocurrencyliveprices.com/img/${crypto.symbol.toLowerCase()}-${crypto.id.toLowerCase()}.png`;
+			});
 			return response.data.data as ICryptoData[];
 		} catch (error) {
 			logger.error("Error fetching cryptocurrency data:", error);

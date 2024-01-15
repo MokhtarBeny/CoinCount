@@ -25,7 +25,7 @@ const dbName = getDbName();
 
 
 const genConnectionString = (db: string = dbName): string => {
-  return `mongodb+srv://${dbUser}:${dbPassword}@${dbHost}/${db}Dev?retryWrites=true&w=majority`;
+  return `mongodb+srv://${dbUser}:${dbPassword}@${dbHost}/${db}?retryWrites=true&w=majority`;
 }
 
 const options: mongoose.ConnectOptions = {
@@ -35,7 +35,7 @@ const options: mongoose.ConnectOptions = {
 const connection = (db: string = dbName) => {
   mongoose.connect(genConnectionString(db), options)
     .then(() =>
-      logger.info('Connected to MongoDB'))
+      logger.info(`Connected to MongoDB cluster : ${db}`))
     .catch((err: Error) => logger.error(err.message));
 }
 

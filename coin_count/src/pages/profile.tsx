@@ -6,6 +6,7 @@ import { Avatar, Image, Spacer } from "@nextui-org/react";
 import getAxiosInstance from "@/utils/axios/getAxiosInstance";
 import { login, logout } from "@/store/slices/authSlice";
 import { toast } from "react-toastify";
+import { WatchListTable } from "./components/WatchlistTable";
 
 const ProfilePage: React.FC = () => {
   const dispatch = useDispatch();
@@ -17,8 +18,10 @@ const ProfilePage: React.FC = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    role: "",
     watchlist: [],
   });
+  const [watchlist, setWatchlist] = useState([]);
   const [isEditable, setIsEditable] = useState({
     user: false,
     password: false,
@@ -82,10 +85,9 @@ const ProfilePage: React.FC = () => {
       );
       toggleEditMode("password");
     } catch (err) {
-      toast.error("An error occured, please try again")
+      toast.error("An error occured, please try again");
     }
   };
-
   const saveUser = async () => {
     try {
       const res = await axiosInstance.put("/auth/change-username", {
@@ -113,12 +115,12 @@ const ProfilePage: React.FC = () => {
   };
 
   useEffect(() => {
-    if(!auth.user) {
+    if (!auth.user) {
       router.push("/login");
     }
-  }
-  , [router.route])
+  }, [auth.user, router, router.route]);
 
+  console.log(watchlist);
 
   return (
     <div className="container mx-auto p-6">
@@ -127,11 +129,11 @@ const ProfilePage: React.FC = () => {
           {/* Right Side - Avatar and User Info (2/5) */}
           <div className="w-2/5 flex flex-col items-center justify-center">
             <Avatar
-            classNames={{
-              base: "w-60 h-60 bg-gradient-to-br from-[#57C1FF] to-[#005BFF]",
+              classNames={{
+                base: "w-60 h-60 bg-gradient-to-br from-[#57C1FF] to-[#005BFF]",
 
-              icon: "text-black/80",
-            }}
+                icon: "text-black/80",
+              }}
               alt="User Avatar"
             />
             <h3 className="text-xl font-semibold mt-3">
@@ -143,7 +145,7 @@ const ProfilePage: React.FC = () => {
                 dispatch(logout());
                 toast.success("Logged out successfully");
                 localStorage.removeItem("t");
-                router.push("/"); 
+                router.push("/");
               }}
               className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4"
             >
@@ -280,7 +282,7 @@ const ProfilePage: React.FC = () => {
         </div>
 
         <div className="border-t border-gray-200 pt-4 mt-4">
-          <h4 className="text-lg font-semibold mb-4">My Watchlist</h4>
+          <WatchListTable />
         </div>
       </div>
     </div>

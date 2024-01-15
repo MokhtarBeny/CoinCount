@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-	fetchCryptoAdminData,
-	updateCryptoVisibility,
-} from "../../store/thunks/cryptoThunk"; // Importing the thunk from the correct file
-import {
-	selectAdminCrypto,
-} from "../../store/slices/cryptoSlice"; // Importing the selector from the slice
+
+import { fetchCryptoAdminData } from "../../store/thunks/cryptoThunk";
+import { selectAdminCrypto } from "../../store/slices/cryptoSlice";
+
 import { AppDispatch } from "@/store/store";
 import { useRouter } from "next/router";
-import axiosInstance from "@/utils/axios/axiosConfig";
+
 import {
 	Chip,
 	CircularProgress,
@@ -25,13 +22,20 @@ import {
 
 import { EyeInvisibleTwoTone, EyeTwoTone } from "@ant-design/icons";
 import checkAdminRole from "@/utils/auth/admin/checkAdmin";
-import { toast } from "react-toastify";
+import { Bounce, toast } from "react-toastify";
+import useUpdateCryptoVisibility from "@/service/useUpdateCryptos.service";
+import axiosInstance from "@/utils/axios/axiosConfig";
 
 function AdminDashboard() {
+	// **** SERVICES **** //
+	const updateCryptoVisibility = useUpdateCryptoVisibility();
+
+	// **** VARIABLE **** //
 	const dispatch: AppDispatch = useDispatch();
 	const { crypto, loading, error } = useSelector(selectAdminCrypto);
 	const router = useRouter();
 	const [isAdmin, setIsAdmin] = useState(false); // State to track admin status
+	const [cryptos, setCryptos] = useState([]); // State to track admin status
 
 	// Table
 	const [page, setPage] = React.useState(1);
@@ -50,16 +54,56 @@ function AdminDashboard() {
 	}, [page, crypto, rowsPerPage]);
 
 	// Change crypto visibility
-	const handleChangeVisibility = (cryptoId: string) => {
-		dispatch(updateCryptoVisibility(cryptoId)) .then(() => {
-               toast.success("Crypto visibility updated successfully!");
-           })
-           .catch((error) => {
-               toast.error("Failed to update crypto visibility: " + error.message);
-           });
+
+	const handleChangeVisibility = (cryptoId: string, index) => {
+		console.log(index, items, "ITEM", items[index].visibility);
+		// Create a new array with the updated visibility
+		const updatedCryptos = cryptos.map((item, idx) => {
+			if (idx === index) {
+				return { ...item, visibility: !item.visibility };
+			}
+			return item;
+		});
+
+		// items[index].visibility = !items[index].visibility
+		updateCryptoVisibility.fetchData(cryptoId);
+		setCryptos(updatedCryptos); // Update the state with the new array
 	};
 
-	
+	useEffect(() => {
+		setCryptos(items);
+	}, [items]);
+
+	useEffect(() => {
+		if (updateCryptoVisibility.data) {
+			console.log(updateCryptoVisibility.data);
+			toast.success("Visibility successfully modified", {
+				position: "top-right",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: "light",
+				transition: Bounce,
+			});
+		}
+		if (updateCryptoVisibility.error) {
+			console.log(updateCryptoVisibility.error);
+			toast.error("An error has occurred", {
+				position: "top-right",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: "light",
+				transition: Bounce,
+			});
+		}
+	}, [updateCryptoVisibility.data, updateCryptoVisibility.error]);
 
 	// Admin
 	useEffect(() => {
@@ -75,9 +119,7 @@ function AdminDashboard() {
 		dispatch(fetchCryptoAdminData());
 	}, [dispatch]);
 
-
-
-// Table Pagination
+	// Table Pagination
 	const bottomContent = React.useMemo(() => {
 		return (
 			<div className="flex w-full justify-center">
@@ -93,9 +135,6 @@ function AdminDashboard() {
 			</div>
 		);
 	}, [page, pages]);
-
-
-
 
 	if (loading)
 		return (
@@ -117,13 +156,6 @@ function AdminDashboard() {
 			</Table>
 		);
 
-
-
-
-
-
-
-          
 	return (
 		<div className="m-12">
 			<Table
@@ -146,7 +178,7 @@ function AdminDashboard() {
 					{/* Add more columns as needed */}
 				</TableHeader>
 				<TableBody>
-					{items.map((item) => (
+					{cryptos.map((item, index) => (
 						<TableRow key={item.id} className="cursor-pointer">
 							<TableCell>{item.rank}</TableCell>
 							<TableCell>{item.name}</TableCell>
@@ -172,25 +204,39 @@ function AdminDashboard() {
 							</TableCell>
 							<TableCell>
 								<div className="relative flex items-center gap-2">
-									<Tooltip content="Visibilité de la crypto">
-										<span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-											{item.visibility ? (
+									<span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+										{item.visibility ? (
+											<>
+												{updateCryptoVisibility.isLoading && (
+													<CircularProgress
+														size="sm"
+														label="Loading..."
+													/>
+												)}
 												<EyeTwoTone
 													twoToneColor="#52c41a"
-													onClick={() =>
-														handleChangeVisibility(item.id)
+													onClick={(e) =>
+														handleChangeVisibility(
+															item.id,
+
+															index
+														)
 													}
 												/>
-											) : (
-												<EyeInvisibleTwoTone
-													twoToneColor="#eb2f96"
-													onClick={() =>
-														handleChangeVisibility(item.id)
-													}
-												/>
-											)}
-										</span>
-									</Tooltip>
+											</>
+										) : (
+											<EyeInvisibleTwoTone
+												twoToneColor="#eb2f96"
+												onClick={(e) =>
+													handleChangeVisibility(
+														item.id,
+
+														index
+													)
+												}
+											/>
+										)}
+									</span>
 								</div>
 							</TableCell>
 						</TableRow>

@@ -11,28 +11,28 @@ const AuthPage = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const refreshMyToken = async (token: string) => {
-    try {
-      localStorage.setItem("t", token);
-      const resp = await axiosInstance.get("/refresh_token", {
-        params: { token },
-      });
-      const { token: refreshedToken, user } = resp.data;
-      dispatch(
-        login({ token: refreshedToken, user: { ...user, id: user._id } })
-      );
-      router.push("/");
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   useEffect(() => {
+    const refreshMyToken = async (token: string) => {
+      try {
+        localStorage.setItem("t", token);
+        const resp = await axiosInstance.get("/refresh_token", {
+          params: { token },
+        });
+        const { token: refreshedToken, user } = resp.data;
+        dispatch(
+          login({ token: refreshedToken, user: { ...user, id: user._id } })
+        );
+        router.push("/");
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
     const t = query.t as string | undefined;
     if (t) {
       refreshMyToken(t);
     }
-  }, [query]);
+  }, [query, axiosInstance, dispatch, router]);
 
   return (
     <div className="flex justify-center items-center h-screen">

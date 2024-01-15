@@ -45,6 +45,7 @@ const LoginPage: React.FC = () => {
         email: user.email,
         watchlist: user.watchlist,
         id: user._id,
+        role: user.role,
       };
       if (res.status === 200) {
         dispatch(

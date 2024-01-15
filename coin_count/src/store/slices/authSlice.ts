@@ -5,7 +5,8 @@ export interface User {
     username: string,
     email: string,
     watchlist: any[]
-    id: string, 
+    id: string,
+    role: string
 }
 
 export interface AuthState {
@@ -19,7 +20,8 @@ const initialState: AuthState = {
         id: "",
         username: "",
         email: "",
-        watchlist: []
+        watchlist: [],
+        role: null
     }
 };
 
@@ -34,9 +36,9 @@ export const authSlice = createSlice({
         },
         logout: (state) => {
             state.token = "";
-            state.user = { id: "", username: "", email: "", watchlist: [] };
+            state.user = { id: "", username: "", email: "", watchlist: [], role: null };
         },
-        updateUser : (state, action: PayloadAction<User>) => {
+        updateUser: (state, action: PayloadAction<User>) => {
             state.user = action.payload;
         }
 
