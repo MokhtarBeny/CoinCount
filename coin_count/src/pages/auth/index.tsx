@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { login } from "@/store/slices/authSlice";
 import storage from "@/utils/auth/localStorage";
 import getAxiosInstance from "@/utils/axios/getAxiosInstance";
+import { toast } from "react-toastify";
 
 const AuthPage = () => {
   const axiosInstance = getAxiosInstance();
@@ -24,7 +25,7 @@ const AuthPage = () => {
         );
         router.push("/");
       } catch (err) {
-        console.error(err);
+        toast.error("Something went wrong");
       }
     };
 

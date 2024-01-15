@@ -66,8 +66,6 @@ const RegisterPage: React.FC = () => {
   const handleSocialLogin = async (provider: string) => {
     try {
       const res = await signIn(provider, { callbackUrl: "/" });
-
-      console.log("SOCIAL : ", res);
     } catch (err: any) {
       setError(err.response.data.message);
     }

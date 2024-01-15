@@ -14,8 +14,8 @@ import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import { fetchWatchlist, removeFromWatchlist } from "@/utils/axios/watchlist";
 
-export const WatchListTable = () => {
-	const [watchlist, setWatchlist] = useState([]);
+const WatchListTable = () => {
+		const [watchlist, setWatchlist] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 
 	const formatPrice = (price) => {
@@ -248,3 +248,6 @@ export const WatchListTable = () => {
 		</div>
 	);
 };
+
+
+export default WatchListTable; 

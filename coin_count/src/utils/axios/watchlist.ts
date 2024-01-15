@@ -7,7 +7,7 @@ import axiosInstance from "./axiosConfig";
       const response = await axiosInstance.get("/auth/watchlist");
    return response.data
     } catch (error) {
-      console.error("Error fetching watchlist:", error);
+      throw error;
     }
   };
 

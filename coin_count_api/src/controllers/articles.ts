@@ -28,7 +28,6 @@ export const getArticles = async (req: Request, res: Response) => {
         const fetchArticlesPromises = sources.map(async (source) => {
             const mapFunction = sourceMapping.mappingFunctions[source.slug.toLowerCase()];
             if (!mapFunction) {
-                console.error(`Mapping function not found for ${source.slug}`);
                 return []; // Skip this source
             }
 
@@ -51,7 +50,6 @@ export const getArticles = async (req: Request, res: Response) => {
         const articles = articlesArrays.flat();
         res.send(articles);
     } catch (error) {
-        console.error(error);
         res.status(500).send({ error: "Error fetching articles" });
     }
 };

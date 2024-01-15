@@ -7,6 +7,7 @@ import ArticlesList from "@/components/rss_feed/ArticleList";
 import Categorie from "@/components/rss_feed/Category";
 import FilterCategory from "@/components/rss_feed/FilterArticleList";
 import FilterArticleList from "@/components/rss_feed/FilterArticleList";
+import { toast } from "react-toastify";
 
 interface Categories {
   categories: string[];
@@ -43,9 +44,7 @@ const Articles = () => {
     try {
       const response = await axiosInstance.get("articles");
       setArticles(response.data);
-      console.log(response.data);
     } catch (error) {
-      console.error("Erreur lors de la récupération du flux RSS", error);
       throw error;
     }
   };
@@ -59,10 +58,10 @@ const Articles = () => {
           setCategories(categories);
         })
         .catch((error) => {
-          console.error("Error fetching crypto data:", error);
+          toast.error(error.message);
         });
     } catch (error) {
-      console.error("Error fetching crypto data:", error);
+      toast.error(error.message);
     }
   };
 

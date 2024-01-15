@@ -40,7 +40,6 @@ export default function AdminArticleSource() {
 
   const toggleActiveState = async (sourceId: string, type: string) => {
     try {
-      console.log(sourceId, type);
       const response = await axiosInstance.put(`/sources/${sourceId}`, {
         type: type,
       });
@@ -84,7 +83,6 @@ export default function AdminArticleSource() {
       try {
         const response = await axiosInstance.get("/sources");
         setArticleSource(response.data);
-        console.log(response.data);
       } catch (error) {
         toast.error(error.message);
       }

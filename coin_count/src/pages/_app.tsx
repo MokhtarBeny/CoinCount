@@ -12,7 +12,7 @@ import Layout from "@/layout";
 import getAxiosInstance from "@/utils/axios/getAxiosInstance";
 
 import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import { useRouter } from "next/router";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
@@ -40,7 +40,6 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   }, [router]);
 
 
-  console.log(session);
   useEffect(() => {
     const t = localStorage.getItem("t");
     if (t) {
@@ -59,7 +58,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
           await storage.saveToLocalStorage("t", token);
           dispatch(login({ token, user }));
         } catch (err) {
-          console.log(err);
+          toast.error("Something went wrong");
         }
       };
       refreshMyToken();

@@ -66,7 +66,6 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
 
 export const refreshToken = async (req: Request, res: Response): Promise<Response> => {
     const token = req.headers.authorization?.split(' ')[1]; // Assuming token is sent in the Authorization header
-    console.log(token);
     if (!token) {
         return res.status(401).json({ message: 'No token provided' });
     }
@@ -147,7 +146,6 @@ export const socialSignIn = async (req: Request, res: Response): Promise<Respons
 
 export const changePassword = async (req: Request, res: Response): Promise<Response> => {
     const token = req.headers.authorization?.split(' ')[1]; // Assuming token is sent in the Authorization header
-    console.log(token);
     if (!token) {
         return res.status(401).json({ message: 'No token provided' });
     }
@@ -176,7 +174,6 @@ export const changePassword = async (req: Request, res: Response): Promise<Respo
 
 export const changeUsername = async (req: Request, res: Response): Promise<Response> => {
     const token = req.headers.authorization?.split(' ')[1]; // Assuming token is sent in the Authorization header
-    console.log(token);
     if (!token) {
         return res.status(401).json({ message: 'No token provided' });
     }
@@ -238,7 +235,6 @@ export const addToWatchlist = async (req: Request, res: Response): Promise<Respo
         return res.json({ message: 'Crypto added to watchlist successfully', user });
     }
     catch (error: any ) {
-        console.log(error); 
         return res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
@@ -274,7 +270,6 @@ export const removeFromWatchlist = async (req: Request, res: Response): Promise<
         return res.json({ message: 'Crypto removed from watchlist successfully', user: updatedUser });
     }
     catch (error: any ) {
-        console.log(error); 
         return res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
@@ -282,7 +277,6 @@ export const removeFromWatchlist = async (req: Request, res: Response): Promise<
 
 export const getWatchlist = async (req: Request, res: Response): Promise<Response> => {
     const token = req.headers.authorization?.split(' ')[1]; // Assuming token is sent in the Authorization header
-    console.log(token);
     if (!token) {
         return res.status(401).json({ message: 'No token provided' });
     }
@@ -303,7 +297,6 @@ export const getWatchlist = async (req: Request, res: Response): Promise<Respons
 }
 export const resetWatchlist = async (req: Request, res: Response): Promise<Response> => {
     const token = req.headers.authorization?.split(' ')[1]; // Assuming token is sent in the Authorization header
-    console.log(token);
     if (!token) {
         return res.status(401).json({ message: 'No token provided' });
     }

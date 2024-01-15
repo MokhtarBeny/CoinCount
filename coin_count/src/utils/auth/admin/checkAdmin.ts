@@ -15,7 +15,6 @@ const checkAdminRole = async (axiosInstance: AxiosInstance, router: NextRouter):
         if (axios.isAxiosError(error) && error.response?.status === 401) {
             router.push("/login");
         } else {
-            console.error("Error:", error);
             router.push("/unauthorized");
         }
         return false;

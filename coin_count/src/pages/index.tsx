@@ -7,6 +7,7 @@ import { Image } from "@nextui-org/react";
 import Link from "next/link";
 import getAxiosInstance from "@/utils/axios/getAxiosInstance";
 import CanvasGradientAnimation from "@/components/Background/CanvasBackground";
+import { toast } from "react-toastify";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -52,9 +53,7 @@ export default function Home() {
       try {
         const response = await axiosInstance.get("articles");
         setArticles(response.data.slice(0, 2));
-        console.log("Articles", articles);
       } catch (error) {
-        console.error("Erreur lors de la récupération du flux RSS", error);
         throw error;
       }
     };
@@ -73,11 +72,10 @@ export default function Home() {
           .sort((a, b) => b.hotScore - a.hotScore)
           .slice(0, 4);
 
-        console.log("Top Hot Cryptos", sortedCryptos);
         setCryptos(sortedCryptos);
       })
       .catch((error) => {
-        console.error("Error fetching crypto data:", error);
+        toast.error("Error fetching cryptos")
       });
   }, []);
   return (

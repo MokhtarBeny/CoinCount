@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axiosInstance from "@/utils/axios/axiosConfig";
 import Link from "next/link";
 import { CloseCircleFilled } from "@ant-design/icons";
+import { toast } from "react-toastify";
 
 const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -13,7 +14,7 @@ const SearchBar = () => {
       const response = await axiosInstance.get(`/cryptos`);
       setAllcryptos(response.data);
     } catch (error) {
-      console.error("Fetch error: ", error);
+      toast.error(error.message);
     }
   };
 

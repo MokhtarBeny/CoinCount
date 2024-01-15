@@ -13,10 +13,10 @@ import {
 import SearchBar from "../searchbar";
 import { useSelector } from "react-redux";
 import Image from "next/image";
+import { toast } from "react-toastify";
 
 export default function _Navbar() {
   const { auth } = useSelector((state: any) => state);
-  console.log(auth);
   const [cryptos, setCryptos] = useState([]);
 
   useEffect(() => {
@@ -27,14 +27,11 @@ export default function _Navbar() {
         const data = await response.json();
         setCryptos(data); // Supposons que l'API renvoie directement un tableau
       } catch (error) {
-        console.error(
-          "Erreur lors de la récupération des données de cryptomonnaie:",
-          error
-        );
+        toast.error("An error occured while fetching cryptos");
       }
     };
 
-    //fetchCryptos();
+    fetchCryptos();
   }, []);
 
   return (

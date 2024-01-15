@@ -86,7 +86,6 @@ const DashboardPage: React.FC = () => {
       }, 5000);
       return;
     }
-    console.log(coin);
     try {
       const response = await axiosInstance.get(
         "/auth/watchlist/" + coin._id,
@@ -124,7 +123,7 @@ const DashboardPage: React.FC = () => {
         setCoins(response.data);
       })
       .catch((error) => {
-        console.error("Error fetching crypto data:", error);
+        toast.error("An error occurred")
       });
   }, []);
 
@@ -133,14 +132,13 @@ const DashboardPage: React.FC = () => {
     const className = change < 0 ? "text-red-500" : "text-green-500";
     return <span className={className}>{change.toFixed(2)}%</span>;
   };
-console.log(watchlist)
   useEffect(() => {
     const fetchWatchlist = async () => {
       try {
         const response = await axiosInstance.get("/auth/watchlist");
         setWatchlist(response.data);
       } catch (error) {
-        console.error("Error fetching watchlist:", error);
+        toast.error("An error occurred")
       }
     };
     fetchWatchlist();

@@ -6,7 +6,7 @@ import { Avatar, Image, Spacer } from "@nextui-org/react";
 import getAxiosInstance from "@/utils/axios/getAxiosInstance";
 import { login, logout } from "@/store/slices/authSlice";
 import { toast } from "react-toastify";
-import { WatchListTable } from "./components/WatchlistTable";
+import WatchListTable from "./components/WatchlistTable";
 
 const ProfilePage: React.FC = () => {
   const dispatch = useDispatch();
@@ -28,7 +28,6 @@ const ProfilePage: React.FC = () => {
   });
 
   useEffect(() => {
-    console.log(auth.token);
     if (auth.token) {
       const userA = auth.user;
       setUser((prevUser) => ({
@@ -93,8 +92,6 @@ const ProfilePage: React.FC = () => {
       const res = await axiosInstance.put("/auth/change-username", {
         username: user.username,
       });
-
-      console.log(res.data);
       setUser((prevUser) => ({
         ...prevUser,
         username: res.data.user.username,
@@ -120,8 +117,6 @@ const ProfilePage: React.FC = () => {
     }
   }, [auth.user, router, router.route]);
 
-  console.log(watchlist);
-
   return (
     <div className="container mx-auto p-6">
       <div className="bg-white shadow-lg rounded-lg p-6">
@@ -141,7 +136,6 @@ const ProfilePage: React.FC = () => {
             <p className="text-gray-500">{auth.user.email || ""}</p>
             <button
               onClick={() => {
-                console.log("logout");
                 dispatch(logout());
                 toast.success("Logged out successfully");
                 localStorage.removeItem("t");

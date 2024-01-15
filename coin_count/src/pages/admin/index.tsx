@@ -57,8 +57,6 @@ function AdminDashboard() {
 	// Change crypto visibility
 
 	const handleChangeVisibility = (cryptoId: string, index) => {
-		console.log(index, items, "ITEM", items[index].visibility);
-		// Create a new array with the updated visibility
 		const updatedCryptos = cryptos.map((item, idx) => {
 			if (idx === index) {
 				return { ...item, visibility: !item.visibility };
@@ -77,7 +75,6 @@ function AdminDashboard() {
 
 	useEffect(() => {
 		if (updateCryptoVisibility.data) {
-			console.log(updateCryptoVisibility.data);
 			toast.success("Visibility successfully modified", {
 				position: "top-right",
 				autoClose: 5000,
@@ -91,7 +88,6 @@ function AdminDashboard() {
 			});
 		}
 		if (updateCryptoVisibility.error) {
-			console.log(updateCryptoVisibility.error);
 			toast.error("An error has occurred", {
 				position: "top-right",
 				autoClose: 5000,
