@@ -141,9 +141,21 @@ const Articles = () => {
             No articles found...
           </p>
         ) : (
-          <p className="text-2xl uppercase font-bold mb-3 text-black">
-            Tendances du moment
+          <div className="flex justify-between align-center">
+
+          <p className="text-2xl uppercase font-bold mb-3 text-black ">
+            
+            Trending 
           </p>
+          <span className="text-muted">
+            {
+              filteredArticles.length
+            }
+            {filteredArticles.length > 1 ? " articles" : " article"}
+            {" "}
+            Found
+          </span>
+          </div>
         )}
 
         <div className="bg-white-500 flex flex-row gap-4">

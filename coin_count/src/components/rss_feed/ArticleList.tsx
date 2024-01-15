@@ -71,26 +71,31 @@ const ArticlesList: React.FC<{ articles: Article[] }> = ({ articles }) => {
   return (
     <div>
       {renderArticles()}
-      <div className="flex flex-1 justify-center items-center my-4">
-        {articles.length > 4 && !showAll && (
-          <Button
-            onClick={handleShowAll}
-            size="lg"
-            className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-3 px-6  border border-blue-500 hover:border-transparent rounded h-12 "
-          >
-            More results
-          </Button>
-        )}
-        {showAll && (
-          <Button
-            onClick={handleShowLess}
-            size="lg"
-            className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-3 px-6  border border-blue-500 hover:border-transparent rounded h-12"
-          >
-            Less results
-          </Button>
-        )}
-      </div>
+      {
+        articles.length > 0 && (
+          <div className="flex flex-1 justify-center items-center my-4">
+          {articles.length > 4 && !showAll && (
+            <Button
+              onClick={handleShowAll}
+              size="lg"
+              className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-3 px-6  border border-blue-500 hover:border-transparent rounded h-12 "
+            >
+              More results
+            </Button>
+          )}
+          {showAll && (
+            <Button
+              onClick={handleShowLess}
+              size="lg"
+              className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-3 px-6  border border-blue-500 hover:border-transparent rounded h-12"
+            >
+              Less results
+            </Button>
+          )}
+        </div>
+        )
+      }
+     
     </div>
   );
 };

@@ -3,6 +3,7 @@ import { parseString } from 'xml2js';
 import { Request, Response } from 'express';
 import sourceMapping from '../utils/sourceMapping';
 import Source from '../models/sources';
+import extractContent from '../utils/sourceMapping/extractContent';
 
 
 interface RssItem {
@@ -59,7 +60,7 @@ export const getArticles = async (req: Request, res: Response) => {
 
 
 // export const getArticles = async (req: Request, res: Response) => {
-//     const response = await axios.get("https://news.bitcoin.com/feed");
+//     const response = await axios.get("https://coinpedia.org/feed");
 //     const xmlData = response.data;
 //     parseString(xmlData, (err: any, result: any) => {
 //         if (err) {
@@ -68,17 +69,17 @@ export const getArticles = async (req: Request, res: Response) => {
 //         } else {
 //             const articles = result.rss.channel[0].item.map((item: RssItem) => (
 //                 {
-//                     title: item.title[0],
-//                     description: item.description[0],
-//                     date: item.pubDate[0],
-//                     link: item.link[0],
-//                     image: item['bnmedia:post-thumbnail'][0]['bnmedia:url'][0],
-//                     author: item["dc:creator"][0],
-//                     categories: item.category.map((category: any) => category)
+                    // title: item.title[0],
+                    // description: extractContent(item.description[0]).text,
+                    // date: item.pubDate[0],
+                    // link: item.link[0],
+                    // image: extractContent(item.description[0]).imageUrl,
+                    // author: item["dc:creator"][0],
+                    // categories: item.category.map((category: any) => category)
 //                 }));
-//             res.send(result.rss.channel[0].item);
-//             return;
-//             res.send(articles);
+//                 res.send(articles);
+//                 return;
+//                 res.send(result.rss.channel[0].item[0]);
 //         }
 //     });
 
