@@ -85,11 +85,10 @@ export default function CryptoPage() {
                 Change 24h
               </p>
               <h4
-                className={`font-medium text-lg ${
-                  parseFloat(crypto.changePercent24Hr) > 0
-                    ? "text-green-500"
-                    : "text-red-500"
-                }`}
+                className={`font-medium text-lg ${parseFloat(crypto.changePercent24Hr) > 0
+                  ? "text-green-500"
+                  : "text-red-500"
+                  }`}
               >
                 {parseFloat(crypto.changePercent24Hr).toFixed(2)}%{" "}
                 <ChangeIndicator changePercent24Hr={crypto.changePercent24Hr} />
@@ -123,9 +122,9 @@ export default function CryptoPage() {
           </CardFooter>
         </Card>
         <Card isFooterBlurred className="col-span-12 row-span-2 sm:col-span-7">
-          <CardBody>
-            <CryptoChart cryptoHistoryData={cryptoHistory} />
-          </CardBody>
+
+          <CryptoChart cryptoHistoryData={cryptoHistory} />
+
         </Card>
         <Card className="col-span-12 sm:col-span-5 h-full  items-center  justify-center content-center flex flex-row ">
           <CardBody className="flex">

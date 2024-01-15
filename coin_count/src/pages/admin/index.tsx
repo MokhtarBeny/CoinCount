@@ -181,7 +181,8 @@ function AdminDashboard() {
 					{cryptos.map((item, index) => (
 						<TableRow key={item.id} className="cursor-pointer">
 							<TableCell>{item.rank}</TableCell>
-							<TableCell>{item.name}</TableCell>
+							<TableCell>  <span className="flex">   <img src={item.icon} alt={item.name} className="w-6 h-6 mr-2" />
+								{" "}{item.name}</span></TableCell>
 							<TableCell>{item.symbol}</TableCell>
 							<TableCell>
 								{parseFloat(item.priceUsd).toFixed(2)} $

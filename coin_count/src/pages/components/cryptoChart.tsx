@@ -95,6 +95,7 @@ export default function CryptoChart({ cryptoHistoryData }: ICryptoChartProps) {
 
   const options = {
     responsive: true,
+    maintainAspectRatio: true,
     plugins: {
       legend: {
         position: "top" as const,
@@ -128,7 +129,7 @@ export default function CryptoChart({ cryptoHistoryData }: ICryptoChartProps) {
       <Line
         options={options}
         data={filteredData}
-        className="w-full md:w-1/2 lg:w-1/3 h-64 md:h-96 lg:h-80"
+        className="w-full md:w-1/2 lg:w-1/3 h-100"
       />
       <div>
         <Tabs
