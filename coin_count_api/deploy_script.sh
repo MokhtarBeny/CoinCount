@@ -17,6 +17,12 @@ mkdir ~/coin_count_api
 tar -xzf ~/coin_count_api.tgz -C ~/coin_count_api
 cd ~/coin_count_api
 
+# Log file for deployment inside coin_count_api folder
+DEPLOY_LOG="./deploy_logs.txt"
+
+# Record the start time and date of deployment
+echo "Deployment started at $(date)" >> $DEPLOY_LOG
+
 npm install | tee npm_install_log.txt
 
 npm run init:env 
