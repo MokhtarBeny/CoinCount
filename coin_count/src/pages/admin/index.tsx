@@ -25,6 +25,7 @@ import checkAdminRole from "@/utils/auth/admin/checkAdmin";
 import { Bounce, toast } from "react-toastify";
 import useUpdateCryptoVisibility from "@/service/useUpdateCryptos.service";
 import axiosInstance from "@/utils/axios/axiosConfig";
+import Link from "next/link";
 
 function AdminDashboard() {
 	// **** SERVICES **** //
@@ -119,10 +120,26 @@ function AdminDashboard() {
 		dispatch(fetchCryptoAdminData());
 	}, [dispatch]);
 
+	const viewOtherAdminPage = () => {
+		return(
+			<div className="flex justify-end my-2">
+				<Link href="/admin/articles"
+					className="border-danger border-1 text-danger rounded-md px-2 py-2"
+				>
+					Edit Flux Rss Articles
+				</Link>
+			</div>
+
+		)
+	}
+
+
 	// Table Pagination
 	const bottomContent = React.useMemo(() => {
 		return (
+			<>
 			<div className="flex w-full justify-center">
+
 				<Pagination
 					isCompact
 					showControls
@@ -133,6 +150,8 @@ function AdminDashboard() {
 					onChange={(page) => setPage(page)}
 				/>
 			</div>
+			</>
+
 		);
 	}, [page, pages]);
 
@@ -146,7 +165,9 @@ function AdminDashboard() {
 	if (error) return <p>Error loading data</p>;
 	if (!crypto)
 		return (
-			<Table aria-label="Example empty table">
+	<>
+	{isAdmin && viewOtherAdminPage()}
+			<Table aria-label="Empty Table">
 				<TableHeader>
 					<TableColumn>NAME</TableColumn>
 					<TableColumn>Price</TableColumn>
@@ -154,10 +175,13 @@ function AdminDashboard() {
 				</TableHeader>
 				<TableBody emptyContent={"No data available."}>{[]}</TableBody>
 			</Table>
+	</>
+
 		);
 
 	return (
 		<div className="m-12">
+			{isAdmin && viewOtherAdminPage()}
 			<Table
 				aria-label="Crypto Data Table"
 				bottomContent={bottomContent}
@@ -175,7 +199,6 @@ function AdminDashboard() {
 					<TableColumn>MARKET CAP USD</TableColumn>
 					<TableColumn>Visibility</TableColumn>
 					<TableColumn>Actions</TableColumn>
-					{/* Add more columns as needed */}
 				</TableHeader>
 				<TableBody>
 					{cryptos.map((item, index) => (

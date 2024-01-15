@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import { fetchWatchlist, removeFromWatchlist } from "@/utils/axios/watchlist";
 
-export const WatchListTable: React.FC = () => {
+export const WatchListTable = () => {
 	const [watchlist, setWatchlist] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -134,51 +134,48 @@ export const WatchListTable: React.FC = () => {
 					<table className="min-w-full leading-normal">
 						<thead>
 							<tr>
-								<th
-									className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer"
-									onClick={() => handleSort("rank")}
-								>
+							<th className="px-2 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sm:px-5 cursor-pointer" onClick={() => handleSort("rank")}>
 									Rank
 									{sortField === "rank" &&
 										(sortDirection === "asc" ? "↑" : "↓")}
 								</th>
-								<th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+								<th className="px-2 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sm:px-5 cursor-pointer">
 									Coin
 								</th>
 								<th
-									className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer "
+									className="px-2 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sm:px-5 cursor-pointer"
 									onClick={() => handleSort("priceUsd")}
 								>
 									Price
 									{sortField === "priceUsd" &&
 										(sortDirection === "asc" ? "↑" : "↓")}
 								</th>
-								<th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+								<th className="px-2 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sm:px-5">
 									24h
 								</th>
-								<th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+								<th className="px-2 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sm:px-5">
 									Volume sur 24h en $
 								</th>
-								<th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+								<th className="px-2 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sm:px-5">
 									Market Cap
 								</th>
-								<th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+								<th className="px-2 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sm:px-5">
 									Sparkline
 								</th>
-								<th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-									UnFollow
+								<th className="px-2 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sm:px-5">
+									Favorite
 								</th>
 							</tr>
 						</thead>
 						<tbody>
 							{sortedwatchlist.map((coin, index) => (
 								<tr key={index}>
-									<td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-										<p className="text-gray-900 whitespace-no-wrap">
+                  					<td className="px-2 py-5 border-b border-gray-200 bg-white text-sm sm:px-5">
+								<p className="text-gray-900 whitespace-no-wrap">
 											{coin.rank}
 										</p>
 									</td>
-									<td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+									<td className="px-2 py-5 border-b border-gray-200 bg-white text-sm sm:px-5">
 										<Link
 											href={`/crypto/${coin.id}`}
 											className="btn btn-primary px-3"
@@ -194,28 +191,28 @@ export const WatchListTable: React.FC = () => {
 											</div>
 										</Link>
 									</td>
-									<td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+									<td className="px-2 py-5 border-b border-gray-200 bg-white text-sm sm:px-5">
 										<p className="text-gray-900 whitespace-no-wrap">
 											${formatPrice(coin.priceUsd)}
 										</p>
 									</td>
-									<td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+									<td className="px-2 py-5 border-b border-gray-200 bg-white text-sm sm:px-5">
 										{formatChangePercent(coin.changePercent24Hr)}
 									</td>
-									<td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+									<td className="px-2 py-5 border-b border-gray-200 bg-white text-sm sm:px-5">
 										<p className="text-gray-900 whitespace-no-wrap">
 											$
 											{parseInt(coin.volumeUsd24Hr).toLocaleString()}{" "}
 											{/* Volume avec séparateurs de milliers */}
 										</p>
 									</td>
-									<td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+									<td className="px-2 py-5 border-b border-gray-200 bg-white text-sm sm:px-5">
 										<p className="text-gray-900 whitespace-no-wrap">
 											${parseInt(coin.marketCapUsd).toLocaleString()}{" "}
 											{/* Market Cap avec séparateurs de milliers */}
 										</p>
 									</td>
-									<td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                  					<td className="px-2 py-5 border-b border-gray-200 bg-white text-sm sm:px-5">
 										<Sparklines
 											data={generateTrendData(
 												coin.changePercent24Hr,
@@ -234,7 +231,7 @@ export const WatchListTable: React.FC = () => {
 											/>
 										</Sparklines>
 									</td>
-									<td className="px-5 py-5 border-b border-gray-200 bg-white text-large">
+									<td className="px-2 py-5 border-b border-gray-200 bg-white text-sm sm:px-5">
 										<button
 											className="btn btn-primary px-3 "
 											onClick={() => handleRemoveFromWatchlist(coin)}

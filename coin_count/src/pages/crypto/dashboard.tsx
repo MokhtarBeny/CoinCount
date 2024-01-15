@@ -33,11 +33,11 @@ const DashboardPage: React.FC = () => {
       setSortField(field);
       setSortDirection('asc');
     }
-  };
+  };  
 
   const sortedCoins = React.useMemo(() => {
     if (!sortField) return coins;
-    return [...coins].sort((a, b) => {
+  return [...coins].sort((a, b) => {
       if (sortField === 'rank' || sortField === 'priceUsd') {
         const valueA = sortField === 'rank' ? a.rank : parseFloat(a.priceUsd);
         const valueB = sortField === 'rank' ? b.rank : parseFloat(b.priceUsd);
@@ -147,7 +147,7 @@ console.log(watchlist)
   }, []);
 
   return (
-    <div className="container mx-auto px-4 sm:px-8">
+    <div className="container mx-auto px-4 sm:px-8 overflow-scroll w-full">
       <div className="py-8">
         <div>
           <h2 className="text-2xl font-semibold leading-tight">
@@ -157,7 +157,7 @@ console.log(watchlist)
         <div className="my-2 flex sm:flex-row flex-col">
           {/* Ici, vous pouvez ajouter des boutons de filtrage ou de tri si nécessaire */}
         </div>
-        <div className="inline-block min-w-full shadow rounded-lg overflow-x-auto">
+        <div className="inline-block min-w-full shadow rounded-lg overflow-x-scroll">
           <table className="min-w-full leading-normal">
             <thead>
               <tr>

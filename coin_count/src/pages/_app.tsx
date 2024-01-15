@@ -13,9 +13,32 @@ import getAxiosInstance from "@/utils/axios/getAxiosInstance";
 
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import { useRouter } from "next/router";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const dispatch = useDispatch();
+  const router = useRouter();
+  const axiosInstance = getAxiosInstance();
+
+  useEffect(() => {
+    const checkBackend = async () => {
+      if(router.pathname != "/_error"){
+        try {
+          const response = await axiosInstance.get('/health'); 
+          if(response.data.health != "ok"){
+          router.push('/error-page'); 
+          }
+          
+        } catch (error) {
+          router.push('/error-page'); 
+        }
+      }
+    
+    };
+
+    checkBackend();
+  }, [router]);
+
 
   console.log(session);
   useEffect(() => {

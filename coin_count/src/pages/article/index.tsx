@@ -140,24 +140,18 @@ const Articles = () => {
           </p>
         ) : (
           <div className="flex justify-between align-center">
-
-          <p className="text-2xl uppercase font-bold mb-3 text-black ">
-            
-            Trending 
-          </p>
-          <span className="text-muted">
-            {
-              filteredArticles.length
-            }
-            {filteredArticles.length > 1 ? " articles" : " article"}
-            {" "}
-            Found
-          </span>
+            <p className="text-2xl uppercase font-bold mb-3 text-black ">
+              Trending
+            </p>
+            <span className="text-muted">
+              {filteredArticles.length}
+              {filteredArticles.length > 1 ? " articles" : " article"} Found
+            </span>
           </div>
         )}
 
-        <div className="bg-white-500 flex flex-row gap-4">
-          <div className="bg-white-400 w-1/2 py-3  ">
+        <div className="bg-white-500 flex flex-col sm:flex-row gap-4">
+          <div className="bg-white-400 w-full sm:w-1/2 py-3">
             {filteredArticles.length > 0 && (
               <>
                 <RssCard
@@ -172,7 +166,7 @@ const Articles = () => {
               </>
             )}
           </div>
-          <div className="bg-white-400 w-1/2 py-3  ">
+          <div className="bg-white-400 w-full sm:w-1/2 py-3">
             {filteredArticles.length > 0 && (
               <>
                 <RssCard
@@ -189,8 +183,7 @@ const Articles = () => {
           </div>
         </div>
         <div className="bg-white-400">
-          <ArticlesList articles={filteredArticles} />
-        </div>
+        <ArticlesList articles={filteredArticles.length > 2 ? filteredArticles.slice(2) : []} />        </div>
       </div>
     </div>
   );

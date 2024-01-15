@@ -125,10 +125,9 @@ const ProfilePage: React.FC = () => {
   return (
     <div className="container mx-auto p-6">
       <div className="bg-white shadow-lg rounded-lg p-6">
-        <div className="flex">
-          {/* Right Side - Avatar and User Info (2/5) */}
-          <div className="w-2/5 flex flex-col items-center justify-center">
-            <Avatar
+      <div className="flex flex-col md:flex-row">
+         <div className="w-full sm:w-2/5 flex flex-col items-center justify-center">     
+                 <Avatar
               classNames={{
                 base: "w-60 h-60 bg-gradient-to-br from-[#57C1FF] to-[#005BFF]",
 
@@ -142,6 +141,7 @@ const ProfilePage: React.FC = () => {
             <p className="text-gray-500">{auth.user.email || ""}</p>
             <button
               onClick={() => {
+                console.log("logout");
                 dispatch(logout());
                 toast.success("Logged out successfully");
                 localStorage.removeItem("t");
@@ -153,7 +153,7 @@ const ProfilePage: React.FC = () => {
             </button>
           </div>
 
-          <div className="w-3/5">
+          <div className="w-full md:w-3/5 mt-4 md:mt-0">
             <div className="flex justify-end">
               <button
                 onClick={() => {
@@ -281,7 +281,7 @@ const ProfilePage: React.FC = () => {
           </div>
         </div>
 
-        <div className="border-t border-gray-200 pt-4 mt-4">
+        <div className="border-t border-gray-200 pt-4 mt-4 w-full overflow-scroll">
           <WatchListTable />
         </div>
       </div>

@@ -104,7 +104,7 @@ export default function Home() {
               {auth.token ? (
                 <Link
                   className="sm:w-1/2 sm:text-center inline-block transition-all space-x-2  rounded px-4 py-1.5 md:py-2 text-base font-semibold leading-7 text-zinc-100   bg-zinc-900 ring-1 ring-zinc-900 hover:text-zinc-900   hover:bg-zinc-100 duration-150"
-                  href="/login"
+                  href="/article"
                 >
                   Read Articles
                 </Link>

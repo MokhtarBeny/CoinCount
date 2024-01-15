@@ -38,6 +38,7 @@ export default function _Navbar() {
   }, []);
 
   return (
+    <div className="flex w-full">
     <Navbar isBordered isBlurred={false}>
       <NavbarBrand>
         <div className="flex items-center gap-2">
@@ -115,5 +116,6 @@ export default function _Navbar() {
         </NavbarItem>
       </NavbarContent>
     </Navbar>
+    </div>
   );
 }

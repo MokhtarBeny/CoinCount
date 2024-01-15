@@ -20,7 +20,7 @@ import checkAdminRole from "@/utils/auth/admin/checkAdmin";
 import { toast } from "react-toastify";
 import { DeleteFilled, DeleteOutlined } from "@ant-design/icons";
 
-const adminArticleSource = () => {
+export default function AdminArticleSource() {
   const router = useRouter();
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -99,10 +99,10 @@ const adminArticleSource = () => {
   };
 
   return (
-    <div className="container mx-auto">
-      <div className="flex p-4 shadow-lg rounded my-5 border ">
+    <div className="container mx-auto my-5 p-2 sm:p-0">
+      <div className="flex p-4 shadow-lg rounded my-5 border sm:flex-row flex-col align-center justify-center ">
         <Input
-          className="w-1/4 p-2"
+          className="w-full md:w-1/4 p-2"
           placeholder="Nom de la source"
           value={newSourceInput.name}
           onChange={(e) =>
@@ -110,7 +110,7 @@ const adminArticleSource = () => {
           }
         />
         <Input
-          className="w-2/4 p-2 "
+          className="w-full md:w-2/4 p-2"
           placeholder="Url de la source"
           value={newSourceInput.url}
           onChange={(e) =>
@@ -119,7 +119,7 @@ const adminArticleSource = () => {
         />
 
         <button
-          className="w-1/4 text-white bg-green-500 rounded-md"
+          className="w-1/2  md:w-1/4 text-white bg-green-500 rounded-md p-2 "
           onClick={() => {
             addToSource();
           }}
@@ -184,4 +184,3 @@ const adminArticleSource = () => {
   );
 };
 
-export default adminArticleSource;
