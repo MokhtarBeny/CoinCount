@@ -7,7 +7,6 @@ const os = require('os');
 const app = express();
 
 
-const packageJson = require('../package.json'); 
 
 app.use(morgan('dev'));
 
@@ -32,8 +31,6 @@ app.get("/api/health", (req, res) => {
         const uptime = process.uptime(); 
         const memoryUsage = process.memoryUsage();
         const healthInfo = {
-            application: packageJson.name,
-            version: packageJson.version,
             uptime: `${Math.floor(uptime / 60)} minutes ${Math.floor(uptime % 60)} seconds`,
             environment: process.env.NODE_ENV || 'development',
             health: "ok",
@@ -53,20 +50,6 @@ app.get("/api/health", (req, res) => {
 
 
 
-app.get('/', (req, res) => {
-    res.send(`
-        <html>
-            <head>
-                <title>${packageInfo.name}</title>
-            </head>
-            <body>
-                <h1>Welcome to ${packageInfo.name}!</h1>
-                <p>Version : ${packageInfo.version}</p>
-                <p>This is the home to our application.</p>
-            </body>
-        </html>
-    `);
-});
 
 
 export default app;
