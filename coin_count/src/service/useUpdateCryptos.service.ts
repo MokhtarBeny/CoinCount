@@ -30,7 +30,6 @@ const useUpdateCryptoVisibility = <T>(): {
 				// body: JSON.stringify({ 'cryptoId': id })
 			};
 			const result = await fetchWrapper<T>(endpoint, config);
-			console.log(result, "from result update crypto");
 			setData(result);
 		} catch (error) {
 			setError(error);

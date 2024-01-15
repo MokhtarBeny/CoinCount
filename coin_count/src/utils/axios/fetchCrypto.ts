@@ -7,7 +7,6 @@ export async function fetchCrypto(id: string) {
 		const response = await axiosInstance.get(`/cryptos/${id}`);
 		return response.data;
 	} catch (error) {
-		console.error("Error fetching crypto data:", error);
 		throw error;
 	}
 }
@@ -18,7 +17,6 @@ export async function fetchCryptoHistory(id: string) {
 		const response = await axiosInstance.get(`/cryptos/${id}/history`);
 		return response.data;
 	} catch (error) {
-		console.error("Error fetching crypto data:", error);
 		throw error;
 	}
 }
@@ -30,7 +28,6 @@ export async function fetchCryptos() {
 		const response = await axiosInstance.get("/cryptos");
 		return response.data;
 	} catch (error) {
-		console.error("Error fetching  cryptos:", error);
 		throw error;
 	}
 }
@@ -41,7 +38,6 @@ export async function fetchAdminCryptos() {
 		const response = await axiosInstance.get("/admin-cryptos");
 		return response.data;
 	} catch (error) {
-		console.error("Error fetching  cryptos:", error);
 		throw error;
 	}
 }
