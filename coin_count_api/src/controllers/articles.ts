@@ -40,7 +40,7 @@ export const getArticles = async (req: Request, res: Response) => {
                         return;
                     }
                     const items = result.rss.channel[0].item;
-                    const articles = items.map(article => mapFunction(article, source.slug));
+                    const articles = items.map(article => mapFunction(article));
                     resolve(articles);
                 });
             });
