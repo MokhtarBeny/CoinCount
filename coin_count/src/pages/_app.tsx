@@ -37,7 +37,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     };
 
     checkBackend();
-  }, [router]);
+  }, []);
 
 
   useEffect(() => {
