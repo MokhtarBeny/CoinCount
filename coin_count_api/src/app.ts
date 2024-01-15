@@ -62,7 +62,7 @@ app.get('/', (req, res) => {
             <body>
                 <h1>Welcome to ${packageInfo.name}!</h1>
                 <p>Version: ${packageInfo.version}</p>
-                <p>This is the home page of our application.</p>
+                <p>This is home to our application.</p>
             </body>
         </html>
     `);
