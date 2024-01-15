@@ -69,6 +69,16 @@ export default function AdminArticleSource() {
     }
   };
 
+  const deleteSource = async (sourceId: string) => { 
+    try {
+      const response = await axiosInstance.delete(`/sources/${sourceId}`);
+      setArticleSource(response.data.sources);
+      toast.success(response.data.message);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  }
+
   useEffect(() => {
     const fetchArticleSources = async () => {
       try {
@@ -103,7 +113,7 @@ export default function AdminArticleSource() {
       <div className="flex p-4 shadow-lg rounded my-5 border sm:flex-row flex-col align-center justify-center ">
         <Input
           className="w-full md:w-1/4 p-2"
-          placeholder="Nom de la source"
+          placeholder="Source Name"
           value={newSourceInput.name}
           onChange={(e) =>
             setNewSourceInput({ ...newSourceInput, name: e.target.value })
@@ -111,7 +121,7 @@ export default function AdminArticleSource() {
         />
         <Input
           className="w-full md:w-2/4 p-2"
-          placeholder="Url de la source"
+          placeholder="Url of the source"
           value={newSourceInput.url}
           onChange={(e) =>
             setNewSourceInput({ ...newSourceInput, url: e.target.value })
@@ -170,7 +180,9 @@ export default function AdminArticleSource() {
                         Activate
                       </button>
                     )}
-                    <button className="p-1 pb-2 px-3 ">
+                    <button className="p-1 pb-2 px-3 "
+                      onClick={() => deleteSource(source._id)}
+                    >
                       <DeleteOutlined />
                     </button>
                   </div>

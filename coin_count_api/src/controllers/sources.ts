@@ -29,15 +29,17 @@ export const deleteSource = async (req: Request, res: Response) => {
     try {
         const source = await Source.findById(req.params.id);
         if (!source) throw Error('No source found');
-        await source.remove();
-        res.status(200).json({ success: true });
+        await Source.findOneAndDelete({ _id: req.params.id });
+
+        const sources = await Source.find();
+        res.status(200).json({ success: true, sources });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 }
 
 export const toggleActiveSource = async (req: Request, res: Response) => {
-    // try {
+    try {
     const type = req.body.type;
     const source = await Source.findById(req.params.id);
     if (!source) throw Error('No source found');
@@ -54,9 +56,9 @@ export const toggleActiveSource = async (req: Request, res: Response) => {
     const sources = await Source.find();
 
     res.status(203).json({ success: true, sources, message });
-    // } catch (err) {
-    //     res.status(500).json({ error: err.message });
-    // }
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 }
 
 

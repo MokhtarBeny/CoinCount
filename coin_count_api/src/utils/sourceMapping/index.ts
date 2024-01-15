@@ -43,10 +43,10 @@ const coinpediaFunction = (item: any) => ({
 });
 
 const mappingFunctions: { [key: string]: MapFunction } = {
-  "coin desk": coindeskMapFunction,
-  "bitcoin magazine": bitcoinMagazineFunction,
-  "news bitcoin": newsBitcoinFunction,
-  "coinpedia": coinpediaFunction,
+  "coindesk.com": coindeskMapFunction,
+  "bitcoinmagazine.com": bitcoinMagazineFunction,
+  "news.bitcoin.com": newsBitcoinFunction,
+  "coinpedia.org": coinpediaFunction,
 };
 
 const sourceMapping = {

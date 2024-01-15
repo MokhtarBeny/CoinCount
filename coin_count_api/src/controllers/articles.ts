@@ -17,7 +17,6 @@ interface RssItem {
 
 }
 
-
 export const getArticles = async (req: Request, res: Response) => {
     try {
         const sources = await Source.find({ active: true });
@@ -27,9 +26,9 @@ export const getArticles = async (req: Request, res: Response) => {
         }
 
         const fetchArticlesPromises = sources.map(async (source) => {
-            const mapFunction = sourceMapping.mappingFunctions[source.name.toLowerCase()];
+            const mapFunction = sourceMapping.mappingFunctions[source.slug.toLowerCase()];
             if (!mapFunction) {
-                console.error(`Mapping function not found for ${source.name}`);
+                console.error(`Mapping function not found for ${source.slug}`);
                 return []; // Skip this source
             }
 
@@ -42,7 +41,7 @@ export const getArticles = async (req: Request, res: Response) => {
                         return;
                     }
                     const items = result.rss.channel[0].item;
-                    const articles = items.map(mapFunction);
+                    const articles = items.map(article => mapFunction(article, source.slug));
                     resolve(articles);
                 });
             });
@@ -56,8 +55,6 @@ export const getArticles = async (req: Request, res: Response) => {
         res.status(500).send({ error: "Error fetching articles" });
     }
 };
-
-
 
 // export const getArticles = async (req: Request, res: Response) => {
 //     const response = await axios.get("https://coinpedia.org/feed");
