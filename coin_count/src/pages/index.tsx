@@ -79,7 +79,7 @@ export default function Home() {
       .catch((error) => {
         console.error("Error fetching crypto data:", error);
       });
-  }, [articles, axiosInstance]);
+  }, []);
   return (
     <>
       <CanvasGradientAnimation />
