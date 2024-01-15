@@ -10,12 +10,12 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' # Conditional Execution
+    if: github.ref == 'refs/heads/main'
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Compress the coin_count_api code
+    - name: Compress the coin_count_api code including deploy_script.sh
       run: tar -czf coin_count_api.tgz -C coin_count_api .
 
     - name: Set up SSH connection
@@ -24,10 +24,10 @@ jobs:
         ssh-private-key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
 
     - name: Transfer code to AWS EC2 and decompress
-      run: scp -o StrictHostKeyChecking=no coin_count_api.tgz ubuntu@ec2-35-180-92-234.eu-west-3.compute.amazonaws.com:~/
+      run: scp -o StrictHostKeyChecking=no coin_count_api.tgz ubuntu@ec2-35-180-92-234.eu-west-3.compute.amazonaws.com:~
 
     - name: Execute deployment script on EC2
-      run: ssh -o StrictHostKeyChecking=no ubuntu@ec2-35-180-92-234.eu-west-3.compute.amazonaws.com 'bash ~/coin_count_api/deploy_script.sh'
+      run: ssh -o StrictHostKeyChecking=no ubuntu@ec2-35-180-92-234.eu-west-3.compute.amazonaws.com 'bash ~/deploy_script.sh'
 
     - name: Cleanup
       run: ssh -o StrictHostKeyChecking=no ubuntu@ec2-35-180-92-234.eu-west-3.compute.amazonaws.com 'rm ~/coin_count_api.tgz'
