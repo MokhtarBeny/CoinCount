@@ -61,7 +61,7 @@ app.get('/', (req, res) => {
             </head>
             <body>
                 <h1>Welcome to ${packageInfo.name}!</h1>
-                <p>Version: ${packageInfo.version}</p>
+                <p>Version : ${packageInfo.version}</p>
                 <p>This is the home to our application.</p>
             </body>
         </html>
