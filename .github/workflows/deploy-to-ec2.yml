@@ -26,6 +26,9 @@ jobs:
     - name: Transfer code to AWS EC2 and decompress
       run: scp -o StrictHostKeyChecking=no coin_count_api.tgz ubuntu@ec2-35-180-92-234.eu-west-3.compute.amazonaws.com:~
 
+    - name: Decompress the code on AWS EC2
+      run: ssh -o StrictHostKeyChecking=no ubuntu@ec2-35-180-92-234.eu-west-3.compute.amazonaws.com 'tar -xzf ~/coin_count_api.tgz -C ~/'
+
     - name: Execute deployment script on EC2
       run: ssh -o StrictHostKeyChecking=no ubuntu@ec2-35-180-92-234.eu-west-3.compute.amazonaws.com 'bash ~/coin_count_api/deploy_script.sh'
 
