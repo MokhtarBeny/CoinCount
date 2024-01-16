@@ -25,7 +25,7 @@ echo "Deployment started at $(date)" >> $DEPLOY_LOG
 
 npm install | tee npm_install_log.txt
 
-npm run init:env 
+npm run init:env-prod
 
 npm run build | tee npm_build_log.txt
 if [ ${PIPESTATUS[0]} -ne 0 ]; then

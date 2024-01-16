@@ -1,0 +1,39 @@
+name: Deploy coin_count to AWS EC2
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'coin_count/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Compress the coin_count code including deploy_script.sh
+      run: tar -czf coin_count.tgz -C coin_count .
+
+    - name: Set up SSH connection
+      uses: webfactory/ssh-agent@v0.5.2
+      with:
+        ssh-private-key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+
+    - name: Transfer code to AWS EC2 and decompress
+      run: scp -o StrictHostKeyChecking=no coin_count.tgz ubuntu@ec2-35-180-92-234.eu-west-3.compute.amazonaws.com:~
+
+    - name: Decompress the code on AWS EC2
+      run: |
+        ssh -o StrictHostKeyChecking=no ubuntu@ec2-35-180-92-234.eu-west-3.compute.amazonaws.com '
+        mkdir -p ~/coin_count &&
+        tar -xzf ~/coin_count.tgz -C ~/coin_count'
+
+    - name: Execute deployment script on EC2
+      run: ssh -o StrictHostKeyChecking=no ubuntu@ec2-35-180-92-234.eu-west-3.compute.amazonaws.com 'bash ~/coin_count/deploy_script.sh'
+
+    - name: Cleanup
+      run: ssh -o StrictHostKeyChecking=no ubuntu@ec2-35-180-92-234.eu-west-3.compute.amazonaws.com 'rm ~/coin_count.tgz'
