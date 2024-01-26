@@ -48,6 +48,7 @@ ehthumbs.db
 # Optional: npm package lock files
 package-lock.json
 yarn.lock
+.lockb
 
 # Optional: Logs
 logs
