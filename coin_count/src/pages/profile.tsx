@@ -85,6 +85,7 @@ const ProfilePage: React.FC = () => {
       toggleEditMode("password");
     } catch (err) {
       toast.error("An error occured, please try again");
+      console.log("Profile error", err)
     }
   };
   const saveUser = async () => {
@@ -108,6 +109,7 @@ const ProfilePage: React.FC = () => {
       toggleEditMode("user");
     } catch (err) {
       toast.error("An error occured, please try again");
+      console.log("Profile error2", err)
     }
   };
 

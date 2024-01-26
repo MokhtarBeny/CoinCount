@@ -28,10 +28,11 @@ export default function _Navbar() {
         setCryptos(data); // Supposons que l'API renvoie directement un tableau
       } catch (error) {
         toast.error("An error occured while fetching cryptos");
+        console.log("Navbar error", error)
       }
     };
 
-    fetchCryptos();
+    // fetchCryptos();
   }, []);
 
   return (

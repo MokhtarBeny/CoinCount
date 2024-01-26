@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "@/utils/axios/axiosConfig";
 import Link from "next/link";
-import { CloseCircleFilled } from "@ant-design/icons";
 import { toast } from "react-toastify";
 
 const SearchBar = () => {
